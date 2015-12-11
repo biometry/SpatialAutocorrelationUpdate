@@ -1,0 +1,1060 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.11.23)  29 NOV 2015 17:53
+entering extended mode
+**simulating_SACdata_doc.tex
+(simulating_SACdata_doc.tex
+LaTeX2e <2015/10/01> patch level 2
+Babel <3.9m> and hyphenation patterns for 69 languages loaded.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amstext.sty"
+Package: amstext 2000/06/29 v2.01
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks14
+\ex@=\dimen103
+))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty"
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen104
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks15
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks16
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks17
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\preprint\authblk.sty"
+Package: authblk 2001/02/27 1.3 (PWD)
+\affilsep=\skip46
+\@affilsep=\skip47
+\c@Maxaffil=\count99
+\c@authors=\count100
+\c@affil=\count101
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count102
+))
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\caption\caption.sty"
+Package: caption 2015/09/17 v3.3-111 Customizing captions (AR)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\caption\caption3.sty"
+Package: caption3 2015/09/20 v1.7-115 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen114
+\captionmargin@=\dimen115
+\captionwidth=\dimen116
+\caption@tempdima=\dimen117
+\caption@indent=\dimen118
+\caption@parindent=\dimen119
+\caption@hangindent=\dimen120
+)
+\c@ContinuedFloat=\count103
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\caption\subcaption.sty"
+Package: subcaption 2015/09/15 v1.1-100 Sub-captions (AR)
+\c@subfigure=\count104
+\c@subtable=\count105
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count106
+\Gm@cntv=\count107
+\c@Gm@tempcnt=\count108
+\Gm@bindingoffset=\dimen121
+\Gm@wd@mp=\dimen122
+\Gm@odd@mp=\dimen123
+\Gm@even@mp=\dimen124
+\Gm@layoutwidth=\dimen125
+\Gm@layoutheight=\dimen126
+\Gm@layouthoffset=\dimen127
+\Gm@layoutvoffset=\dimen128
+\Gm@dimlist=\toks20
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty"
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-hyperref.sty"
+Package: hobsub-hyperref 2012/04/25 v1.12 Bundle oberdiek, subset hyperref (HO)
+
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-generic.sty"
+Package: hobsub-generic 2012/04/25 v1.12 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/04/25 v1.12 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2011/06/24 v1.1 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\auxhook.sty"
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen129
+\Hy@linkcounter=\count109
+\Hy@pagecounter=\count110
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\pd1enc.def"
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count111
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg"
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+
+Package hyperref Warning: Unexpected value for option `hidelinks'
+(hyperref)                is ignored on input line 4319.
+
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4688.
+\c@Hy@tempcnt=\count112
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\url\url.sty"
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen130
+\Fld@menulength=\count113
+\Field@Width=\dimen131
+\Fld@charsize=\dimen132
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring OFF on input line 6315.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
+\Hy@abspage=\count114
+\c@Item=\count115
+\c@Hfootnote=\count116
+)
+
+Package hyperref Message: Driver (autodetected): hpdftex.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def"
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count117
+\c@bookmark@seq@number=\count118
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\rerunfilecheck.sty"
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip48
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tools\multicol.sty"
+Package: multicol 2015/08/19 v1.8n multicolumn formatting (FMi)
+\c@tracingmulticols=\count119
+\mult@box=\box28
+\multicol@leftmargin=\dimen133
+\c@unbalance=\count120
+\c@collectmore=\count121
+\doublecol@number=\count122
+\multicoltolerance=\count123
+\multicolpretolerance=\count124
+\full@width=\dimen134
+\page@free=\dimen135
+\premulticols=\dimen136
+\postmulticols=\dimen137
+\multicolsep=\skip49
+\multicolbaselineskip=\skip50
+\partial@page=\box29
+\last@line=\box30
+\maxbalancingoverflow=\dimen138
+\mult@rightbox=\box31
+\mult@grightbox=\box32
+\mult@gfirstbox=\box33
+\mult@firstbox=\box34
+\@tempa=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\c@columnbadness=\count125
+\c@finalcolumnbadness=\count126
+\last@try=\dimen139
+\multicolovershoot=\dimen140
+\multicolundershoot=\dimen141
+\mult@nat@firstbox=\box52
+\colbreak@box=\box53
+\mc@col@check@num=\count127
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\multirow\multirow.sty"
+\bigstrutjot=\dimen142
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty"
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen143
+\lightrulewidth=\dimen144
+\cmidrulewidth=\dimen145
+\belowrulesep=\dimen146
+\belowbottomsep=\dimen147
+\aboverulesep=\dimen148
+\abovetopsep=\dimen149
+\cmidrulesep=\dimen150
+\cmidrulekern=\dimen151
+\defaultaddspace=\dimen152
+\@cmidla=\count128
+\@cmidlb=\count129
+\@aboverulesep=\dimen153
+\@belowrulesep=\dimen154
+\@thisruleclass=\count130
+\@lastruleclass=\count131
+\@thisrulewidth=\dimen155
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\isodate\isodate.sty"
+Package: isodate 2010/01/03 v2.30 Print dates with different formats (HH)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\substr\substr.sty"
+Package: substr 2009/10/20 v1.2 Handle substrings
+\c@su@anzahl=\count132
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\isodate\english.idf"
+File: english.idf 2010/01/03 v2.30 Language definitions for isodate package (HH
+)
+
+Define commands for English date format
+)
+\c@iso@tmpmonth=\count133
+\c@iso@yeartwo=\count134
+\c@iso@slash=\count135
+\c@iso@minus=\count136
+\c@iso@dot=\count137
+\c@iso@@slash=\count138
+\c@iso@@minus=\count139
+\c@iso@@dot=\count140
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\libertine.sty"
+Package: libertine 2014/11/25 (Bob Tennent) Supports Libertine and Biolinum fon
+ts for all LaTeX engines.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\xkeyval\xkeyval.sty"
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xkeyval\xkeyval.tex"
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xkeyval\xkvutils.tex"
+\XKV@toks=\toks21
+\XKV@tempa@toks=\toks22
+)
+\XKV@depth=\count141
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\textcomp.sty"
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1enc.def"
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 334.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 349.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 350.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 351.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 352.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 353.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 354.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 355.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 356.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 357.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 358.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 359.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 360.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 361.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 362.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 363.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 364.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 365.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 366.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 367.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 368.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 376.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 377.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 378.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 379.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 380.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 381.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 382.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 383.
+Package textcomp Info: Setting lmtt sub-encoding to TS1/0 on input line 384.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 385.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 386.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 387.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 388.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 389.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 390.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 391.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 392.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 393.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 394.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 395.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 396.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 397.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 398.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 399.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 400.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 401.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 402.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 403.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 404.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 405.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\mweights\mweights.sty"
+Package: mweights 2013/07/21 (Bob Tennent) Support package for multiple-weight 
+font packages. 
+LaTeX Info: Redefining \bfseries on input line 22.
+LaTeX Info: Redefining \mdseries on input line 29.
+LaTeX Info: Redefining \rmfamily on input line 36.
+LaTeX Info: Redefining \sffamily on input line 53.
+LaTeX Info: Redefining \ttfamily on input line 70.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\fontenc.sty"
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\fontaxes\fontaxes.sty"
+Package: fontaxes 2014/03/23 v1.0d Font selection axes
+LaTeX Info: Redefining \upshape on input line 29.
+LaTeX Info: Redefining \itshape on input line 31.
+LaTeX Info: Redefining \slshape on input line 33.
+LaTeX Info: Redefining \scshape on input line 37.
+)
+LaTeX Info: Redefining \oldstylenums on input line 478.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\LinLibertine_I.tex"))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lineno\lineno.sty"
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count142
+\output=\toks23
+\linenoprevgraf=\count143
+\linenumbersep=\dimen156
+\linenumberwidth=\dimen157
+\c@linenumber=\count144
+\c@pagewiselinenumber=\count145
+\c@LN@truepage=\count146
+\c@internallinenumber=\count147
+\c@internallinenumbers=\count148
+\quotelinenumbersep=\dimen158
+\bframerule=\dimen159
+\bframesep=\dimen160
+\bframebox=\box54
+LaTeX Info: Redefining \\ on input line 3056.
+)
+(simulating_SACdata_doc.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 51.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Try loading font information for OT1+LinuxLibertineT-TLF on
+ input line 51.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\ot1linuxlibertinet-tlf.
+fd"
+File: OT1LinuxLibertineT-TLF.fd 2012/11/26 (autoinst) Font definitions for OT1/
+LinuxLibertineT-TLF.
+)
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 51.
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count149
+\scratchdimen=\dimen161
+\scratchbox=\box55
+\nofMPsegments=\count150
+\nofMParguments=\count151
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count152
+\MPscratchDim=\dimen162
+\MPnumerator=\count153
+\makeMPintoPDFobject=\count154
+\everyMPtoPDFconversion=\toks25
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.9055pt, 483.69684pt, 56.90553pt)
+* v-part:(T,H,B)=(42.67912pt, 731.23582pt, 71.1319pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=483.69684pt
+* \textheight=731.23582pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-66.59087pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\AtBeginShipoutBox=\box56
+Package hyperref Info: Link coloring OFF on input line 51.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count155
+)
+LaTeX Info: Redefining \ref on input line 51.
+LaTeX Info: Redefining \pageref on input line 51.
+LaTeX Info: Redefining \nameref on input line 51.
+
+(simulating_SACdata_doc.out) (simulating_SACdata_doc.out)
+\@outlinefile=\write3
+
+isodate: babel.sty, (n)german.sty have not been loaded
+\c@mv@tabular=\count156
+\c@mv@boldtabular=\count157
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 17.28pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 12.0pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
+(Font)              scaled to size 12.0pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
+(Font)              scaled to size 8.0pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 14.4pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 14.4pt on input line 53.
+LaTeX Font Info:    Try loading font information for OT1+LinuxBiolinumT-TLF on 
+input line 53.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\ot1linuxbiolinumt-tlf.f
+d"
+File: OT1LinuxBiolinumT-TLF.fd 2012/11/26 (autoinst) Font definitions for OT1/L
+inuxBiolinumT-TLF.
+)
+LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/bx/n' in size <14.4> not
+ available
+(Font)              Font shape `OT1/LinuxBiolinumT-TLF/b/n' tried instead on in
+put line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/b/n' will be
+(Font)              scaled to size 14.4pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 54.
+LaTeX Font Info:    Try loading font information for OT1+LinuxLibertineMonoT-TL
+F on input line 54.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\ot1linuxlibertinemonot-
+tlf.fd"
+File: OT1LinuxLibertineMonoT-TLF.fd 2012/12/06 (autoinst) Font definitions for 
+OT1/LinuxLibertineMonoT-TLF.
+)
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineMonoT-TLF/m/n' will be
+(Font)              scaled to size 8.75pt on input line 54.
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--56
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 10.0pt on input line 58.
+LaTeX Font Info:    Try loading font information for TS1+LinuxLibertineT-TLF on
+ input line 61.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\libertine\ts1linuxlibertinet-tlf.
+fd"
+File: TS1LinuxLibertineT-TLF.fd 2012/11/26 (autoinst) Font definitions for TS1/
+LinuxLibertineT-TLF.
+)
+LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 61.
+
+Underfull \hbox (badness 10000) in paragraph at lines 80--81
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 7.0pt on input line 83.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 5.0pt on input line 83.
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--84
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 9.0pt on input line 100.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 9.0pt on input line 100.
+<figures/p_smooth1.pdf, id=11, 722.7pt x 722.7pt>
+File: figures/p_smooth1.pdf Graphic file (type pdf)
+ <use figures/p_smooth1.pdf>
+Package pdftex.def Info: figures/p_smooth1.pdf used on input line 123.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_smooth2.pdf, id=12, 722.7pt x 722.7pt>
+File: figures/p_smooth2.pdf Graphic file (type pdf)
+ <use figures/p_smooth2.pdf>
+Package pdftex.def Info: figures/p_smooth2.pdf used on input line 124.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_smooth3.pdf, id=13, 722.7pt x 722.7pt>
+File: figures/p_smooth3.pdf Graphic file (type pdf)
+ <use figures/p_smooth3.pdf>
+Package pdftex.def Info: figures/p_smooth3.pdf used on input line 125.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_smooth4.pdf, id=14, 722.7pt x 722.7pt>
+File: figures/p_smooth4.pdf Graphic file (type pdf)
+ <use figures/p_smooth4.pdf>
+Package pdftex.def Info: figures/p_smooth4.pdf used on input line 126.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_smooth5.pdf, id=15, 722.7pt x 722.7pt>
+File: figures/p_smooth5.pdf Graphic file (type pdf)
+ <use figures/p_smooth5.pdf>
+Package pdftex.def Info: figures/p_smooth5.pdf used on input line 127.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--131
+
+ []
+
+<figures/p_realistic1.pdf, id=16, 722.7pt x 722.7pt>
+File: figures/p_realistic1.pdf Graphic file (type pdf)
+
+<use figures/p_realistic1.pdf>
+Package pdftex.def Info: figures/p_realistic1.pdf used on input line 133.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_realistic2.pdf, id=17, 722.7pt x 722.7pt>
+File: figures/p_realistic2.pdf Graphic file (type pdf)
+
+<use figures/p_realistic2.pdf>
+Package pdftex.def Info: figures/p_realistic2.pdf used on input line 134.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_realistic3.pdf, id=18, 722.7pt x 722.7pt>
+File: figures/p_realistic3.pdf Graphic file (type pdf)
+
+<use figures/p_realistic3.pdf>
+Package pdftex.def Info: figures/p_realistic3.pdf used on input line 135.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_realistic4.pdf, id=19, 722.7pt x 722.7pt>
+File: figures/p_realistic4.pdf Graphic file (type pdf)
+
+<use figures/p_realistic4.pdf>
+Package pdftex.def Info: figures/p_realistic4.pdf used on input line 136.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_realistic5.pdf, id=20, 722.7pt x 722.7pt>
+File: figures/p_realistic5.pdf Graphic file (type pdf)
+
+<use figures/p_realistic5.pdf>
+Package pdftex.def Info: figures/p_realistic5.pdf used on input line 137.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--141
+
+ []
+
+<figures/p_real1.pdf, id=21, 722.7pt x 722.7pt>
+File: figures/p_real1.pdf Graphic file (type pdf)
+ <use figures/p_real1.pdf>
+Package pdftex.def Info: figures/p_real1.pdf used on input line 143.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_real2.pdf, id=22, 722.7pt x 722.7pt>
+File: figures/p_real2.pdf Graphic file (type pdf)
+ <use figures/p_real2.pdf>
+Package pdftex.def Info: figures/p_real2.pdf used on input line 144.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_real3.pdf, id=23, 722.7pt x 722.7pt>
+File: figures/p_real3.pdf Graphic file (type pdf)
+ <use figures/p_real3.pdf>
+Package pdftex.def Info: figures/p_real3.pdf used on input line 145.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_real4.pdf, id=24, 722.7pt x 722.7pt>
+File: figures/p_real4.pdf Graphic file (type pdf)
+ <use figures/p_real4.pdf>
+Package pdftex.def Info: figures/p_real4.pdf used on input line 146.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_real5.pdf, id=25, 722.7pt x 722.7pt>
+File: figures/p_real5.pdf Graphic file (type pdf)
+ <use figures/p_real5.pdf>
+Package pdftex.def Info: figures/p_real5.pdf used on input line 147.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 143--151
+
+ []
+
+<figures/legend.pdf, id=26, 61.2427pt x 434.72278pt>
+File: figures/legend.pdf Graphic file (type pdf)
+ <use figures/legend.pdf>
+Package pdftex.def Info: figures/legend.pdf used on input line 153.
+(pdftex.def)             Requested size: 38.69662pt x 274.67943pt.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/sc' will be
+(Font)              scaled to size 14.4pt on input line 156.
+
+
+LaTeX Warning: Float too large for page by 19.0613pt on input line 164.
+
+<figures/p_smooth6.pdf, id=27, 722.7pt x 722.7pt>
+File: figures/p_smooth6.pdf Graphic file (type pdf)
+ <use figures/p_smooth6.pdf>
+Package pdftex.def Info: figures/p_smooth6.pdf used on input line 168.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_smooth7.pdf, id=28, 722.7pt x 722.7pt>
+File: figures/p_smooth7.pdf Graphic file (type pdf)
+ <use figures/p_smooth7.pdf>
+Package pdftex.def Info: figures/p_smooth7.pdf used on input line 169.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 168--171
+
+ []
+
+<figures/p_realistic6.pdf, id=29, 722.7pt x 722.7pt>
+File: figures/p_realistic6.pdf Graphic file (type pdf)
+
+<use figures/p_realistic6.pdf>
+Package pdftex.def Info: figures/p_realistic6.pdf used on input line 173.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_realistic7.pdf, id=30, 722.7pt x 722.7pt>
+File: figures/p_realistic7.pdf Graphic file (type pdf)
+
+<use figures/p_realistic7.pdf>
+Package pdftex.def Info: figures/p_realistic7.pdf used on input line 174.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--176
+
+ []
+
+<figures/p_real6.pdf, id=31, 722.7pt x 722.7pt>
+File: figures/p_real6.pdf Graphic file (type pdf)
+ <use figures/p_real6.pdf>
+Package pdftex.def Info: figures/p_real6.pdf used on input line 178.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/p_real7.pdf, id=32, 722.7pt x 722.7pt>
+File: figures/p_real7.pdf Graphic file (type pdf)
+ <use figures/p_real7.pdf>
+Package pdftex.def Info: figures/p_real7.pdf used on input line 179.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 178--181
+
+ []
+
+File: figures/legend.pdf Graphic file (type pdf)
+<use figures/legend.pdf>
+Package pdftex.def Info: figures/legend.pdf used on input line 183.
+(pdftex.def)             Requested size: 38.69662pt x 274.67943pt.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineMonoT-TLF/m/n' will be
+(Font)              scaled to size 7.875pt on input line 193.
+ <figures/y110.pdf, id=35, 722.7pt x 722.7pt>
+File: figures/y110.pdf Graphic file (type pdf)
+
+<use figures/y110.pdf>
+Package pdftex.def Info: figures/y110.pdf used on input line 199.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+ <figures/y111.pdf, id=36, 722.7pt x 722.7pt>
+File: figures/y111.pdf Graphic file (type pdf)
+
+<use figures/y111.pdf>
+Package pdftex.def Info: figures/y111.pdf used on input line 200.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+ <figures/y112.pdf, id=37, 722.7pt x 722.7pt>
+File: figures/y112.pdf Graphic file (type pdf)
+
+<use figures/y112.pdf>
+Package pdftex.def Info: figures/y112.pdf used on input line 201.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+ <figures/y113.pdf, id=38, 722.7pt x 722.7pt>
+File: figures/y113.pdf Graphic file (type pdf)
+
+<use figures/y113.pdf>
+Package pdftex.def Info: figures/y113.pdf used on input line 202.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+ <figures/y114.pdf, id=39, 722.7pt x 722.7pt>
+File: figures/y114.pdf Graphic file (type pdf)
+
+<use figures/y114.pdf>
+Package pdftex.def Info: figures/y114.pdf used on input line 203.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--204
+
+ []
+
+<figures/res110.pdf, id=40, 722.7pt x 722.7pt>
+File: figures/res110.pdf Graphic file (type pdf)
+ <use figures/res110.pdf>
+Package pdftex.def Info: figures/res110.pdf used on input line 206.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/res111.pdf, id=41, 722.7pt x 722.7pt>
+File: figures/res111.pdf Graphic file (type pdf)
+ <use figures/res111.pdf>
+Package pdftex.def Info: figures/res111.pdf used on input line 207.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/res112.pdf, id=42, 722.7pt x 722.7pt>
+File: figures/res112.pdf Graphic file (type pdf)
+ <use figures/res112.pdf>
+Package pdftex.def Info: figures/res112.pdf used on input line 208.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/res113.pdf, id=43, 722.7pt x 722.7pt>
+File: figures/res113.pdf Graphic file (type pdf)
+ <use figures/res113.pdf>
+Package pdftex.def Info: figures/res113.pdf used on input line 209.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+<figures/res114.pdf, id=44, 722.7pt x 722.7pt>
+File: figures/res114.pdf Graphic file (type pdf)
+ <use figures/res114.pdf>
+Package pdftex.def Info: figures/res114.pdf used on input line 210.
+(pdftex.def)             Requested size: 145.11052pt x 145.11086pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 206--211
+
+ []
+
+<figures/correlog110.pdf, id=45, 690.58pt x 690.58pt>
+File: figures/correlog110.pdf Graphic file (type pdf)
+
+<use figures/correlog110.pdf>
+Package pdftex.def Info: figures/correlog110.pdf used on input line 213.
+(pdftex.def)             Requested size: 145.11052pt x 145.11037pt.
+
+<figures/correlog111.pdf, id=46, 690.58pt x 690.58pt>
+File: figures/correlog111.pdf Graphic file (type pdf)
+
+<use figures/correlog111.pdf>
+Package pdftex.def Info: figures/correlog111.pdf used on input line 214.
+(pdftex.def)             Requested size: 145.11052pt x 145.11037pt.
+
+<figures/correlog112.pdf, id=47, 690.58pt x 690.58pt>
+File: figures/correlog112.pdf Graphic file (type pdf)
+
+<use figures/correlog112.pdf>
+Package pdftex.def Info: figures/correlog112.pdf used on input line 215.
+(pdftex.def)             Requested size: 145.11052pt x 145.11037pt.
+
+<figures/correlog113.pdf, id=48, 690.58pt x 690.58pt>
+File: figures/correlog113.pdf Graphic file (type pdf)
+
+<use figures/correlog113.pdf>
+Package pdftex.def Info: figures/correlog113.pdf used on input line 216.
+(pdftex.def)             Requested size: 145.11052pt x 145.11037pt.
+
+<figures/correlog114.pdf, id=49, 690.58pt x 690.58pt>
+File: figures/correlog114.pdf Graphic file (type pdf)
+
+<use figures/correlog114.pdf>
+Package pdftex.def Info: figures/correlog114.pdf used on input line 217.
+(pdftex.def)             Requested size: 145.11052pt x 145.11037pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--218
+
+ []
+
+
+LaTeX Warning: Float too large for page by 53.45169pt on input line 230.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 231.
+[1
+
+{C:/Users/SH/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]pdfTeX warning 
+(ext4): destination with the same identifier (name{page.}) has been already use
+d, duplicate ignored
+<to be read again> 
+                   \relax 
+l.231 \end{document}
+                     [2 <./figures/p_smooth1.pdf> <./figures/p_smooth2.pdf> <./
+figures/p_smooth3.pdf> <./figures/p_smooth4.pdf> <./figures/p_smooth5.pdf> <./f
+igures/p_realistic1.pdf> <./figures/p_realistic2.pdf> <./figures/p_realistic3.p
+df> <./figures/p_realistic4.pdf> <./figures/p_realistic5.pdf> <./figures/p_real
+1.pdf> <./figures/p_real2.pdf> <./figures/p_real3.pdf> <./figures/p_real4.pdf> 
+<./figures/p_real5.pdf> <./figures/legend.pdf>]pdfTeX warning (ext4): destinati
+on with the same identifier (name{page.}) has been already used, duplicate igno
+red
+<to be read again> 
+                   \relax 
+l.231 \end{document}
+                     [3 <./figures/p_smooth6.pdf> <./figures/p_smooth7.pdf> <./
+figures/p_realistic6.pdf> <./figures/p_realistic7.pdf> <./figures/p_real6.pdf> 
+<./figures/p_real7.pdf>]pdfTeX warning (ext4): destination with the same identi
+fier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.231 \end{document}
+                     [4 <./figures/y110.pdf> <./figures/y111.pdf> <./figures/y1
+12.pdf> <./figures/y113.pdf> <./figures/y114.pdf> <./figures/res110.pdf> <./fig
+ures/res111.pdf> <./figures/res112.pdf> <./figures/res113.pdf> <./figures/res11
+4.pdf> <./figures/correlog110.pdf> <./figures/correlog111.pdf> <./figures/corre
+log112.pdf> <./figures/correlog113.pdf> <./figures/correlog114.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 231.
+
+(simulating_SACdata_doc.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 231.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 231.
+Package rerunfilecheck Info: File `simulating_SACdata_doc.out' has not changed.
+
+(rerunfilecheck)             Checksum: C4424F040098D5A42766F8B82A64A221;63.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 231.
+ ) 
+Here is how much of TeX's memory you used:
+ 9840 strings out of 493636
+ 157132 string characters out of 3141334
+ 249496 words of memory out of 3000000
+ 13038 multiletter control sequences out of 15000+200000
+ 31930 words of font info for 59 fonts, out of 3000000 for 9000
+ 1025 hyphenation exceptions out of 8191
+ 36i,7n,75p,1225b,505s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_tltjc6.enc}
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C
+:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_4jqvtd.enc}{C:/
+Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}{C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_lu7m2n.enc}{C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_xogrpz.enc}{C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c7kyj5.enc}<C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumT.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumTB.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineMT.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineT.pfb>
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertin
+eTI.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi1
+0.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program File
+s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on simulating_SACdata_doc.pdf (4 pages, 731502 bytes).
+PDF statistics:
+ 363 PDF objects out of 1000 (max. 8388607)
+ 7 named destinations out of 1000 (max. 500000)
+ 194 words of extra memory for PDF output out of 10000 (max. 10000000)
+
