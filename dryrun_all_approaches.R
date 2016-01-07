@@ -1,8 +1,13 @@
 ## spatial autocorrelation update: a run through the available packages
 
-corrupted in R.app, but not in RStudio ...: 
+??? SpatialFA
 
+corrupted in R.app, but not in RStudio ...: 
+## !!!!
 georob, geoR
+PReMiuM -> error due to "digest"; both work fine on RStudio and command-line-R
+spatialprobit -> error due to sandwich or zoo, works in c-l-R ...
+spBayes -> works in c-l-R ...
 
 #install.packages(c("ncdf", "ncf", "CARBayes", "gee", "geepack", "geesmv", "geoRglm", "georob", "glmmBUGS", "GWmodel", "gwrr", "spgwr", "hSDM", "McSpatial", "ngspatial", "PReMiuM", "ramps", "regress", "spaMM", "spatcounts", "spatialprobit", "sphet", "stocc"))
 # if not installed: download and compile "wordspace"
@@ -20,14 +25,18 @@ source("simulation/04_geo_to_num.R")
 # smooth landscape, SAC onto error term:
 simData("111", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Gaussian
 simData("121", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Bernoulli
-simData("131", gridsize=c(20L, 20L)) # zi-Poisson
+simData("131", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # zi-Poisson
 
+library(lattice)
 d111full <- extract.ncdf("dataset111.nc") 
 d111full[[1]]
 d111 <- d111full[[2]] # extract data only
-d121 <- extract.ncdf("dataset111.nc")[[2]] # extract data only
-library(lattice)
+d121 <- extract.ncdf("dataset121.nc")[[2]] # extract data only
+d131 <- extract.ncdf("dataset131.nc")[[2]] # extract data only
 levelplot(y~Lon+Lat,data=d111) # levelplot response
+
+
+
 
 # 2. run a model, compute residual map
 
@@ -73,27 +82,34 @@ levelplot(residuals(flagsar111) ~ Lon+Lat,data=d111)
 
  (see also McSpatial:::sarml)
 
+## !!!!
 ## CARBayes
 library(CARBayes)
 ...
 
 
 
-
+## !!!!
 gee, geepack, geesmv
 
+## !!!!
 geoRglm
 
+## !!!!
 library(georob)
 
+## !!!!
 glmmBUGS (requires OpenBUGS, I guess)
 
+## McSpatial
 library(McSpatial) # suggests spdep
-# error
-W <- makew(coormat=as.matrix(d111[, 2:3]))
+W <- makew(coormat=as.matrix(d111[, 2:3]), method="knear", eigenvalues=T)
 splogit
-sarml(form=y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d111)
-# gmmlogit allows for random effects (blocks)
+fsarml <- sarml(form=y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, wmat=W$wmat, eigvar=W$eigvar, data=d111)
+str(fsarml)
+# predictions must now be made from the model parameters (with/out spatial effect as based on the fitted value of rho)
+
+# use gmmlogit or splogit for binary data; I don't know the difference ...
 
 
 #%%%%%%%%%%%%%%%%% geographically-weighted regression %%%%%%%%%%%%%%
@@ -178,6 +194,9 @@ levelplot(residuals(fautolog) ~ d121$Lat * d121$Lon) # weird!
 
 ## JAGS
 # see e.g. here for inspiration: http://www.r-bloggers.com/spatial-autocorrelation-of-errors-in-jags/  (by Petr Keil)
+# http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/b862b65b/
+# http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/a7869215/
+# 
 library(R2jags)
 distMat <- as.matrix(dist(d111[,2:3]))
 autologisticData <- list(Y = d111$y, D=distMat, N=nrow(d111), x1=d111$x1, x2=d111$x2, x3=d111$x3, x4=d111$x4, x5=d111$x5, x6=d111$x6, x7=d111$x7)
@@ -228,6 +247,7 @@ summary(fautocov111)
 resautocov111 <- residuals(fautocov111) # calculate residuals
 levelplot(resautocov111 ~ Lon+Lat,data=d111)
 
+
 # residual autologistic:
 rac <- autocov_dist(residuals(fglm111), as.matrix(d111[, 2:3]))
 frac111 <- glm(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7 + rac, data = d111, family = "gaussian")   
@@ -237,22 +257,105 @@ levelplot(resrac111 ~ Lon+Lat,data=d111)
 
 #%%%%%%%%%%%%%%%%%% end autologistic approaches %%%%%%%%%%%%%%%%%%%%%%%
 
-PReMiuM
+## !!!!
+# PReMiuM
+... library(PReMiuM)
 
-ramps
 
+# ramps
+library(ramps)
+rampsControls <- ramps.control(
+   iter = 25,
+   beta = param(rep(0,10), "flat"),
+   sigma2.e = param(1, "invgamma", shape = 2.0, scale = 0.1, tuning = 0.75),
+   phi = param(10, "uniform", min = 0, max = 35, tuning = 0.50),
+   sigma2.z = param(1, "invgamma", shape = 2.0, scale = 0.1)
+)
+fgeoramps <- georamps(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, correlation=corRExp(form=~Lat+Lon), data=d111, control=rampsControls)
+summary(fgeoramps)
+resgeoramps111 <- d111$y - colMeans(fgeoramps$z)
+levelplot(resgeoramps111 ~ Lon+Lat, data=d111) # oops: nice spatial gradient now ...
+
+
+
+## !!!!
 R-INLA (install from non-CRAN first)
 
-regress (spatialCovariance)
 
-spaMM
+## regress  (spatialCovariance)
+#library(regress)
+#fregress <- regress(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, ~Lat+Lon, data=d111)
+# this won't do! I have no idea, how to convey the matrix to the model ...
+# If I could, it should be the same as the gls ...
 
-spatcounts
 
-?? SpatialFA
+## spaMM
+library(spaMM)
+system.time(fcorrHLfit <- corrHLfit(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7 + Matern(1|Lat+Lon), data=d111))
+# takes 2010 s = 33 min
+summary(fcorrHLfit)
+rescorrHLfit111 <- d111$y - fitted(fcorrHLfit)
+levelplot(rescorrHLfit111 ~ Lon+Lat, data=d111) # nice!
+# unclear which options exist; Matern not documented ...
 
-spatialprobit
 
-sphet
+## spatcounts  !!!!! error !!!!
+library(spatcounts)
+library(spdep)
+# make a "region" (as in hSDM)
+celllabel <- 1:nrow(d131)
+# make an adjacency matrix: "gmat"
+neighborlist <- dnearneigh(as.matrix(d131[, 2:3]), d1=0, d2=0.1) 
+gmat131 <- diag(nrow(d131))
+for (i in 1:nrow(d131)){
+	gmat131[i, neighborlist[[i]]] <- 1
+}
+isSymmetric(gmat131) # fine
+# Now, make a "nmat" matrix with IDs of neighbours (i.e. the neighourlist as matrix, padded with 0s), with last column giving the number of neighbours:
+# (there may be a more elegant way to convert a ragged list to a data.frame, but I couldn't find anything in plyr and was offline ...)
+nNeigh <- sapply(neighborlist, length)
+neighbours <- matrix(0, nrow=length(neighborlist), ncol=max(nNeigh))
+for (i in 1:length(nNeigh)){
+	neighbours[i, 1:nNeigh[i]] <- neighborlist[[i]]
+}
+nmat131 <- cbind(neighbours, nNeigh)
+## BUG in code: help states that nmat must be a matrix, but code expects a data.frame! otherwise "Error in nmat[, 2:length(nmat)] : subscript out of bounds"
+attach(d131)
+fest.sc <- est.sc(Yin=as.matrix(y), fm.X=~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, model="Poi", region=celllabel, gmat=gmat131, nmat=as.data.frame(nmat131), totalit=10) #ZIP!
+# !! Error in if (gQg > 0) { : argument is of length zero
+detach(d131)
+
+
+## !!!!
+SpatialFA
+
+
+## !!!!
+## spatialprobit
+library(spatialprobit)
+...
+
+## !!!!
+## spBayes
+library(spBayes)
+fspGLM <- spGLM(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, family="gaussian", data=d111)
+...
+
+## sphet
+library(sphet)
+library(spdep)
+nblw <- nb2listw(dnearneigh(x=as.matrix(d111[,2:3]), d1=0, d2=.3))
+D <- distance(d111[, 2:3], region.id=1:nrow(d131), output=T, file.name="distance.object.Rdata", type="NN", nn=6, firstline=T)
+DD <- read.gwt2dist("distance.object.Rdata", skip=1)
+### doesn't work #### 
+stslshac(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d111, listw=nblw, distance=D, type='Triangular')
+
+
 
 stocc
+
+spatial BRT by Hothorn ...
+
+wavelets
+
+SEVM/PCNM
