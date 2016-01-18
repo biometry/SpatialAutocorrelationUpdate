@@ -1,31 +1,24 @@
 ## spatial autocorrelation update: a run through the available packages
 
-??? SpatialFA
-
-corrupted in R.app, but not in RStudio ...: 
-## !!!!
-georob, geoR
-PReMiuM -> error due to "digest"; both work fine on RStudio and command-line-R
-spatialprobit -> error due to sandwich or zoo, works in c-l-R ...
-spBayes -> works in c-l-R ...
 
 #install.packages(c("ncdf", "ncf", "CARBayes", "gee", "geepack", "geesmv", "geoRglm", "georob", "glmmBUGS", "GWmodel", "gwrr", "spgwr", "hSDM", "McSpatial", "ngspatial", "PReMiuM", "ramps", "regress", "spaMM", "spatcounts", "spatialprobit", "sphet", "stocc"))
+#source("http://www.math.ntnu.no/inla/givemeINLA.R") 
 # if not installed: download and compile "wordspace"
 # compile package simSAC!
 
 # 1. make three data sets for testing (normal, Bernoulli, overdispersed Poisson)
 library(simSAC)
-# or:
-library(wordspace)
-library(ncdf)
-source("simulation/01_simData.R")
-source("simulation/02_extract_ncdf.R")
-source("simulation/03_keep_asking.R")
-source("simulation/04_geo_to_num.R")
-# smooth landscape, SAC onto error term:
-simData("111", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Gaussian
-simData("121", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Bernoulli
-simData("131", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # zi-Poisson
+# # or:
+# library(wordspace)
+# library(ncdf)
+# source("simulation/01_simData.R")
+# source("simulation/02_extract_ncdf.R")
+# source("simulation/03_keep_asking.R")
+# source("simulation/04_geo_to_num.R")
+# # smooth landscape, SAC onto error term:
+# simData("111", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Gaussian
+# simData("121", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # Bernoulli
+# simData("131", gridsize=c(20L, 20L), cvblock.size = c(5, 5)) # zi-Poisson
 
 library(lattice)
 d111full <- extract.ncdf("dataset111.nc") 
@@ -54,6 +47,7 @@ fgam111 <- gam(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7 + s(Lat, L
 summary(fgam111) 
 resgam111 <- residuals(fgam111) # calculate residuals
 levelplot(resgam111 ~ Lon+Lat,data=d111)
+# this works well because of the regularisation build into GAM 
 
 
 ## nlme (for GLS and "correlation=corExp(form= .)")
@@ -80,22 +74,30 @@ summary(flagsar111)
 levelplot(residuals(flagsar111) ~ Lon+Lat,data=d111)
 
 
- (see also McSpatial:::sarml)
+# (see also McSpatial:::sarml further below)
+
 
 ## !!!!
 ## CARBayes
 library(CARBayes)
-...
-
+# requires binary weights matrix for neighbourhood:
+library(spdep)
+neighborlist <- dnearneigh(as.matrix(d121[, 2:3]), d1=0, d2=0.1) 
+W <- nb2mat(neighborlist, style="B")
+fCARiar <- S.CARiar(formula=y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d111, family="gaussian", W=W, burnin=20000, n.sample=120000, verbose=FALSE, thin=10) # DIC=-532
+#S.CARbym # binomial or poisson only!
+fCARleroux <- S.CARleroux(formula=y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d111, family="gaussian", W=W, burnin=20000, n.sample=120000, verbose=FALSE, thin=10) # DIC=-917, so iar is worse
+print(fCARleroux) 
+levelplot(fCARleroux$residuals ~ Lon+Lat, data=d111) # very low values!
 
 
 ## !!!!
 gee, geepack, geesmv
 
-## !!!!
-geoRglm
+## geoRglm
+library(geoRglm)
 
-## !!!!
+## georob
 library(georob)
 
 ## !!!!
@@ -239,6 +241,10 @@ residualsfjagsAuto111 <- d111$y - fjagsAuto$BUGSoutput$mean$mu
 levelplot(residualsfjagsAuto111 ~ d111$Lat * d111$Lon) # da geht noch was ...
 
 
+# same approach with the "rethining" package and stan is demonstrated here:
+https://github.com/rmcelreath/rethinking
+
+
 # spdep:::autocov_dist
 library(spdep)
 ac <- autocov_dist(d111$y, as.matrix(d111[, 2:3]))
@@ -259,7 +265,7 @@ levelplot(resrac111 ~ Lon+Lat,data=d111)
 
 ## !!!!
 # PReMiuM
-... library(PReMiuM)
+library(PReMiuM)
 
 
 # ramps
@@ -278,9 +284,8 @@ levelplot(resgeoramps111 ~ Lon+Lat, data=d111) # oops: nice spatial gradient now
 
 
 
-## !!!!
-R-INLA (install from non-CRAN first)
-
+## R-INLA (install from non-CRAN first)
+library(INLA)
 
 ## regress  (spatialCovariance)
 #library(regress)
@@ -328,12 +333,18 @@ detach(d131)
 
 ## !!!!
 SpatialFA
+see here: https://github.com/James-Thorson/spatial_factor_analysis
+library(devtools)
+install_github("kaskr/adcomp/TMB") 
+source("http://www.math.ntnu.no/inla/givemeINLA.R") 
 
 
 ## !!!!
 ## spatialprobit
 library(spatialprobit)
 ...
+
+
 
 ## !!!!
 ## spBayes
@@ -359,3 +370,4 @@ spatial BRT by Hothorn ...
 wavelets
 
 SEVM/PCNM
+
