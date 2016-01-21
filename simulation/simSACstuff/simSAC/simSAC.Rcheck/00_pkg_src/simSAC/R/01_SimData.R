@@ -26,7 +26,8 @@
 #'         f.sac2 = "x1", 
 #'         f.sac3 = c("^","*"), 
 #'         f.sac4 = list(dispersal.max = 0.1, 
-#'                       dispersal.shape = 30))
+#'                       dispersal.shape = 30),
+#'         interactive = TRUE)
 #' @param dataset Input character of the form \code{"abc"}, with:
 #' \describe{
 #'    \item{\code{a}}{predictor landscape: \describe{
@@ -49,7 +50,7 @@
 #' }
 #' @param filename The destination file name (character). Defaults to "dataset\code{dataset}", e.g. "dataset110".
 #' @param gridsize Vector defining [1] the number of cells in x direction (Longitude), and [2] the number of cells in y direction (Latitude).
-#' @param cvfold Number of unique Cross-Validation (CV) IDs to be assigned blockwise to the data.
+#' @param cvfold Number of unique Cross-Validation (CV) IDs to be assigned blockwise to the data. 
 #' @param cvblock.size Number of cells in x, y direction in one CV block.
 #' @param r.seed Randomisation value to be used in \code{\link[base]{set.seed}} before any stochastic process. Defaults to \code{20151126}
 #' @param n.predictor Number of predictors to be simulated. 
@@ -62,18 +63,19 @@
 #'  \item \code{bio.vars} = character string of length \code{n.predictor} defining which bioclimatic should variables be used.
 #'}
 #' @param f.response Character string of mathematical terms (based on predictors x1, x2,...) yielding the response varibale.
-#' @param par.response Coefficients of the elements in f.response. If not "default", needs to be of same length as f.response, except if the distribution is set to be Gaussian, here an addtional (last) parameter is required to set the standard deviation in \code{\link[stats]{rnorm}}. 
+#' @param par.response Coefficients for the elements in f.response. By default this numeric vector contains an intercept (first element) and beta values for every element in f.response. If the distribution is set to Gaussian, an addtional (last) element is provided to set the standard deviation in \code{\link[stats]{rnorm}}. 
 #' Defaults to 
 #' \itemize{
 #'  \item Gaussian: 0.8, 0.2, -0.9, 0.8, -0.6, 0.5, 0.2
 #'  \item Bernoulli: 0.2, 4.5, -1.2, -1.2, -1.1, 0.9
 #'  \item Poisson: 0.2, 1.6, 0.9, 0.8, -0.8, 0.5  
 #'}
-#' Remember: Poisson is zero-inflated and therefore requires a list of two numeric parameter vectors. First item setting the Bernoulli coefficients, second the Poisson coefficients. 
+#' Remember: Poisson is zero-inflated and therefore requires a list of two numeric parameter vectors. First item is a numeric vector setting the Bernoulli coefficients, second the Poisson coefficients. 
 #' @param f.sac1 If \code{dataset = "**1"}: List of \code{corCoef}, a coefficient impacting the correlation structure, and (only if \code{dataset = "*11"}) \code{sarFactor}, a factor determining the magnitude of SAC added to the existing response varibale.
 #' @param f.sac2 If \code{dataset = "**2"}: Name of the predictor(s) to be omitted in the model structure.
 #' @param f.sac3 If \code{dataset = "**3"}: Character string of "^" and/or "*" to filter (\code{\link[base]{grep}}) and omit respective terms in the model structure. 
 #' @param f.sac4 If \code{dataset = "**4"}: A list of \code{dispersal.max} = maximum dispersal factor, and \code{dispersal.shape} = shape factor, the higher the more skewed the exponential curve.
+#' @param interactive Defaults to \code{TRUE}. If \code{FALSE} existing files are overwritten and data (if not existiing) downloaded automatically, i.e. without asking.
 #' @return No R output. Data and instruction is saved as netCDF file (\code{filename.nc}).
 #' @details Designed to run in default mode. 
 #' @seealso \code{\link{extract.ncdf}} which allows you to readily extract data and attributes from the netCDF file.
@@ -82,7 +84,7 @@
 #' \item SAC cause 1, i.e. spatial error onto response (\code{dataset = "**1"}), is computationally burdensome because of the inversion of the distance matrix. This can be severe for large grids, i.e. \code{gridsize > c(100,100)}.
 #' \item It may be necessary to change the parameter settings (\code{par.response}) for SAC cause 3. Particularly in the case of a Bernoully distributed response variable the magnitude of SAC is rather sensitive to the \code{par.response} values.
 #' }
-#' @import ncdf RandomFields raster wordspace
+#' @import ncdf4 RandomFields raster wordspace
 #' @export
 #' @examples
 #' \dontrun{
@@ -332,7 +334,8 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
                     f.sac2 = "x1", # predictor to omit in model structure
                     f.sac3 = c("^","*"), # functional forms to omitin model structure, here quadratic effects and interactions
                     f.sac4 = list(dispersal.max = 0.1, # maximum dispersal rate
-                                  dispersal.shape = 30)){ # the higher the more skewed
+                                  dispersal.shape = 30), # the higher the more skewed
+                    interactive = TRUE){ # when FALSE, existing files will be replaced, download will be processed
 
   # check if dataset correctly specified
   if(!is.character(dataset)) stop("dataset must be a character string of three numbers defining\n landscape [1;3], distribution [1;3] and SAC scenario [0;4].")
@@ -361,13 +364,15 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   
   # check if file already exists. If so, ask if file should be overwritten
   if(file.exists(filename)){
-    check.overwrite <- keep.asking(Q = "File already exists. Do you want to overwrite it?")
-    if(check.overwrite == "n") stop("File already exists, please specify new filename.")
+    if(interactive){
+      check.overwrite <- keep.asking(Q = "File already exists. Do you want to overwrite it?")
+      if(check.overwrite == "n") stop("File already exists, please specify new filename.")
+    }
   }
   
   #--------------------------------------------------------------------------#
   # set up list for readme 
-  readme <- vector("list", 4L)
+  readme <- vector("list", 5L)
   #--------------------------------------------------------------------------#
   #--------------------------------------------------------------------------#
   
@@ -435,15 +440,19 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   if(dataset[1] == 3){
     # check if data already exists
     if(!file.exists("wc10")){
-      check.download <- keep.asking(Q = "Do you want to download data from http://www.worldclim.org?")
-      if(check.download == "y"){ # check if data should be downloaded
+      if(interactive){
+        check.download <- keep.asking(Q = "Do you want to download data from http://www.worldclim.org?")
+        if(check.download == "y"){ # check if data should be downloaded
+          bio <- getData('worldclim', download = TRUE, var='bio', res=f.real$resolution)
+        }else{ # if not, but file does not exist: error
+          stop(paste0("If data shall not be downloaded, please provide them in the working directory.
+                      Folder must be named: wc",f.real$resolution))
+        }
+      }else{ # if not interactive and file not existing, do download
         bio <- getData('worldclim', download = TRUE, var='bio', res=f.real$resolution)
-      }else{ # if not, but file does not exist: error
-        stop(paste0("If data shall not be downloaded, please provide them in the working directory.
-             Folder must be named: wc",f.real$resolution))
       }
-      }else{ # if data alread exists, load from default location
-        bio <- getData('worldclim', download = FALSE, var='bio', res=f.real$resolution)
+    }else{ # if data alread exists, load from default location
+      bio <- getData('worldclim', download = FALSE, var='bio', res=f.real$resolution)
     }
     
     # define area of interest as extent obj
@@ -501,7 +510,7 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   
   # 1) normal distribution #
   if(dataset[2] == 1){
-    readme[[2]] <- "Gaussian."
+    readme[[2]] <- "Gaussian"
     set.seed(r.seed)
     # set default parameters
     if(par.response == "default"){
@@ -514,9 +523,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
       par.gaus <- par.response
     }
     # compute response variable using specified terms in f.response and parameters
-    y <- eval(parse(text = Reduce(paste, c(paste(par.gaus[1],"+"),
-                                           paste(paste(par.gaus[2:(length(par.gaus)-1)],"*",f.response),
-                                                 collapse="+", sep = " "))))) 
+    resp.formula <- Reduce(paste, c(paste(par.gaus[1],"+"),
+                                    paste(paste(par.gaus[2:(length(par.gaus)-1)],"*",f.response),
+                                          collapse="+", sep = " ")))
+    y <- eval(parse(text = resp.formula)) 
     + rnorm(prod(gridsize), 0, par.gaus[length(par.gaus)]) # add Gaussian noise
     if(dataset[3] == 4){ # if dispersal
       y <- sapply(seq_along(y), function(x) y[x] * (1+ sum(disp[ ,x] * y)))
@@ -525,7 +535,7 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   
   # 1) binomial distribution #
   if(dataset[2] == 2){
-    readme[[2]] <- "Bernoulli."
+    readme[[2]] <- "Bernoulli"
     # set default parameters
     if(par.response == "default"){
       par.bern <- c(0.2,4.5,-1.2,-1.2,-1.1,0.9)
@@ -537,9 +547,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
       par.bern <- par.response
     }
     # compute logit 
-    pi.log <- eval(parse(text = Reduce(paste, c(paste(par.bern[1],"+"),
-                                                paste(paste(par.bern[2:length(par.bern)],"*",f.response),
-                                                      collapse="+", sep = " ")))))
+    resp.formula <- Reduce(paste, c(paste(par.bern[1],"+"),
+                                    paste(paste(par.bern[2:length(par.bern)],"*",f.response),
+                                          collapse="+", sep = " ")))
+    pi.log <- eval(parse(text = resp.formula))
     if(dataset[3] %in% c(0,2,3)){
       set.seed(r.seed)
       y <- rbinom(prod(gridsize), size = 1, prob=plogis(pi.log))
@@ -556,7 +567,7 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
 
   # 1) zero-inflated poisson distribution #
   if(dataset[2] == 3){
-    readme[[2]] <- "Poisson."
+    readme[[2]] <- "zero-inflated Poisson"
     # set default parameters
     if(par.response == "default"){
       par.bern <- c(0.2,4.5,-1.2,-1.2,-1.1,0.9)
@@ -578,9 +589,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
                                                              paste(paste(par.bern[2:length(par.bern)],"*",
                                                                          f.response), 
                                                                    collapse="+", sep = " ")))))))
-    pi <- exp(eval(parse(text = Reduce(paste, c(paste(par.pois[1],"+"),
-                                                paste(paste(par.pois[2:length(par.pois)],"*",f.response),
-                                                      collapse="+", sep = " "))))))
+    resp.formula <- Reduce(paste, c(paste(par.pois[1],"+"),
+                                    paste(paste(par.pois[2:length(par.pois)],"*",f.response),
+                                          collapse="+", sep = " ")))
+    pi <- exp(eval(parse(text = resp.formula)))
     set.seed(r.seed)
     # use poisson error for cases where y = 1
     y <- rpois(prod(gridsize), lambda = pi)
@@ -589,6 +601,9 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
       y <- sapply(seq_along(y), function(x) as.integer(y[x] * (1+ sum(disp[ ,x] * y))))
     }
   }
+  
+  # add attribute for coefficients
+  readme[[5]] <- resp.formula
   
   #--------------------------------------------------------------------------#
   # nuisance
@@ -673,7 +688,7 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   yblocks <- gridsize[2] / cvblock.size[2]
   
   # first fill full blocks
-  block.counter <- cvfold
+  block.counter <- 0
   for(xs in seq(floor(xblocks))){
     for(ys in seq(floor(yblocks))){
       block.counter <- block.counter + 1
@@ -711,42 +726,49 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   if(cvfold > length(unique(cvblock))) warning("You have specified more cross-validation folds (cvfold) than blocks available.\n To change this, increase gridsize, decrease cvblock.size or decrease cvfold.")
   
   set.seed(r.seed)
-  # with replace only if more blocks than cvfold
-  cvfold.sample <- sample(cvfold, size = length(unique(cvblock)), replace = 
-                            ifelse(cvfold < length(unique(cvblock)), TRUE, FALSE))
-  for(i in seq.int(length(unique(cvblock)))) cvblock[cvblock == i+cvfold] <- cvfold.sample[i]
+  # stratified sampling, randomly select cvfold elements from cvblock and assign 1:cvfold
+  cvfold.sample <- rep(NA, length(unique(cvblock)))
+  while(sum(is.na(cvfold.sample)) > 0){
+    whichNA <- which(is.na(cvfold.sample))
+    index <- sample(whichNA, size = ifelse(length(whichNA) > cvfold, cvfold, length(whichNA)))
+    cvfold.sample[index] <- sample(seq.int(cvfold), size = ifelse(length(index) == cvfold, cvfold, length(index)))
+  }
+#   cvfold.sample <- sample(cvfold, size = length(unique(cvblock)), replace = 
+#                             ifelse(cvfold < length(unique(cvblock)), TRUE, FALSE))
+  cvblock <- cvfold.sample[cvblock]
+#   for(i in unique(cvblock)) cvblock[cvblock == i] <- cvfold.sample[i]
   
   #--------------------------------------------------------------------------#
   #--------------------------------------------------------------------------#
   
   # write netcdf
-  dim1 <- dim.def.ncdf("row", "observation", 1:prod(gridsize))
-  dim2 <- dim.def.ncdf("column", "variable", 1:(4+n.predictor))
+  dim1 <- ncdim_def("row", "observation", 1:prod(gridsize))
+  dim2 <- ncdim_def("column", "variable", 1:(4+n.predictor))
 
   var <- vector(mode = "list", length = 4L + n.predictor)
-  var[[1]] = var.def.ncdf("CVid","", dim1, NA, longname = "Block ID for cross-validation")
-  var[[2]] = var.def.ncdf("Lat","", dim1, NA, longname = "Latitude")
-  var[[3]] = var.def.ncdf("Lon","", dim1, NA, longname = "Longitude")
-  var[[4]] = var.def.ncdf("y","", dim1, NA, longname = "Response Variable")
+  var[[1]] = ncvar_def("CVid","", dim1, NA, longname = "Block ID for cross-validation")
+  var[[2]] = ncvar_def("Lat","", dim1, NA, longname = "Latitude")
+  var[[3]] = ncvar_def("Lon","", dim1, NA, longname = "Longitude")
+  var[[4]] = ncvar_def("y","", dim1, NA, longname = "Response Variable")
   for(i in seq.int(n.predictor)){ 
-    var[[i+4]] <- var.def.ncdf(paste0("x",i),"", dim1, NA, 
+    var[[i+4]] <- ncvar_def(paste0("x",i),"", dim1, NA, 
                                longname = paste0("Predictor ", i))
   }
 
-  nc <- create.ncdf(paste0(filename), var)
+  nc <- nc_create(paste0(filename), var)
   
   
 
-  put.var.ncdf(nc, var[[1]], cvblock)
-  put.var.ncdf(nc, var[[2]], lat)
-  put.var.ncdf(nc, var[[3]], lon)
-  put.var.ncdf(nc, var[[4]], y)
+  ncvar_put(nc, var[[1]], cvblock)
+  ncvar_put(nc, var[[2]], lat)
+  ncvar_put(nc, var[[3]], lon)
+  ncvar_put(nc, var[[4]], y)
   for(i in seq.int(n.predictor)){ 
-    put.var.ncdf(nc, var[[4+i]], get(paste0("x", i)))
+    ncvar_put(nc, var[[4+i]], get(paste0("x", i)))
   }
   # write global attributes into ncdf
   # General information
-  att.put.ncdf(nc, 0, attname = "genInfo", 
+  ncatt_put(nc, 0, attname = "genInfo", 
                attval = paste0("Gridsize = ",gridsize[1], 
                                "x", gridsize[2], " cells;",
                                " Random seed = ", r.seed, ";",
@@ -755,24 +777,28 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
                                cvblock.size[2], " cells"), 
                prec = "text")
   
-  # landscape/predictor information
-  att.put.ncdf(nc, 0, attname = "landsc", 
+  # General information: gridsize, random seed, no. of predictors, cv block size
+  ncatt_put(nc, 0, attname = "landsc", 
                attval = readme[[1]], 
                prec = "text")
-  # landscape/predictor information
-  att.put.ncdf(nc, 0, attname = "distr", 
+  # distribution
+  ncatt_put(nc, 0, attname = "distr", 
                attval = readme[[2]], 
                prec = "text")
-  # landscape/predictor information
-  att.put.ncdf(nc, 0, attname = "sacScen", 
+  # SAC scenario
+  ncatt_put(nc, 0, attname = "sacScen", 
                attval = readme[[3]], 
                prec = "text")
-  # landscape/predictor information
-  att.put.ncdf(nc, 0, attname = "model", 
+  # lmodel structure
+  ncatt_put(nc, 0, attname = "model", 
                attval = readme[[4]], 
                prec = "text")
+  # response coefficients
+  ncatt_put(nc, 0, attname = "coeffs",
+            attval = readme[[5]], 
+            prec = "text")
   
-  close.ncdf(nc)
+  nc_close(nc)
   return(invisible(""))
   #--------------------------------------------------------------------------#
 }

@@ -7,12 +7,7 @@ Description: simSAC provides a function to simulate data on three different
     variable; and four different causes of SAC or reference data, i.e. no SAC. It
     further provides a function to readily extract data and attributes from a netCDF
     file.
-Depends:
-    R (>= 3.2.1),
-    ncdf,
-    RandomFields,
-    raster,
-    wordspace
+Depends: R (>= 3.2.1), ncdf4, RandomFields, raster, wordspace
 License: GPL
 LazyData: true
 Maintainer: 'Severin Hauenstein' <severin.hauenstein@saturn.uni-freiburg.de>
@@ -21,3 +16,6 @@ Author: Severin Hauenstein <severin.hauenstein@saturn.uni-freiburg.de> [aut,
 Repository: CRAN, R-Forge
 Additional_repositories: http://R-Forge.R-project.org
 RoxygenNote: 5.0.1
+NeedsCompilation: no
+Packaged: 2016-01-07 14:28:56 UTC; SH
+Built: R 3.2.1; ; 2016-01-07 14:28:58 UTC; windows

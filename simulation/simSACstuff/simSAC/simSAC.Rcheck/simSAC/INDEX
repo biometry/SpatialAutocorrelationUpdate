@@ -1,0 +1,6 @@
+extract.ncdf            Extract data and attributes (e.g. model
+                        structure) from netCDF (.nc) file
+geo.to.num              Transform geographic coordinates to numeric
+                        values
+keep.asking             Wait for specific keypress
+simData                 Simulate spatially autocorrelated (SAC) data

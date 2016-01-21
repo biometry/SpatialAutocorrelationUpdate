@@ -29,7 +29,8 @@ simData(dataset,
         f.sac2 = "x1", 
         f.sac3 = c("^","*"), 
         f.sac4 = list(dispersal.max = 0.1, 
-                      dispersal.shape = 30))
+                      dispersal.shape = 30),
+        interactive = TRUE)
 }
 \arguments{
 \item{dataset}{Input character of the form \code{"abc"}, with:
@@ -78,14 +79,14 @@ simData(dataset,
 
 \item{f.response}{Character string of mathematical terms (based on predictors x1, x2,...) yielding the response varibale.}
 
-\item{par.response}{Coefficients of the elements in f.response. If not "default", needs to be of same length as f.response, except if the distribution is set to be Gaussian, here an addtional (last) parameter is required to set the standard deviation in \code{\link[stats]{rnorm}}. 
+\item{par.response}{Coefficients for the elements in f.response. By default this numeric vector contains an intercept (first element) and beta values for every element in f.response. If the distribution is set to Gaussian, an addtional (last) element is provided to set the standard deviation in \code{\link[stats]{rnorm}}. 
 Defaults to 
 \itemize{
  \item Gaussian: 0.8, 0.2, -0.9, 0.8, -0.6, 0.5, 0.2
  \item Bernoulli: 0.2, 4.5, -1.2, -1.2, -1.1, 0.9
  \item Poisson: 0.2, 1.6, 0.9, 0.8, -0.8, 0.5  
 }
-Remember: Poisson is zero-inflated and therefore requires a list of two numeric parameter vectors. First item setting the Bernoulli coefficients, second the Poisson coefficients.}
+Remember: Poisson is zero-inflated and therefore requires a list of two numeric parameter vectors. First item is a numeric vector setting the Bernoulli coefficients, second the Poisson coefficients.}
 
 \item{f.sac1}{If \code{dataset = "**1"}: List of \code{corCoef}, a coefficient impacting the correlation structure, and (only if \code{dataset = "*11"}) \code{sarFactor}, a factor determining the magnitude of SAC added to the existing response varibale.}
 
@@ -94,6 +95,8 @@ Remember: Poisson is zero-inflated and therefore requires a list of two numeric 
 \item{f.sac3}{If \code{dataset = "**3"}: Character string of "^" and/or "*" to filter (\code{\link[base]{grep}}) and omit respective terms in the model structure.}
 
 \item{f.sac4}{If \code{dataset = "**4"}: A list of \code{dispersal.max} = maximum dispersal factor, and \code{dispersal.shape} = shape factor, the higher the more skewed the exponential curve.}
+
+\item{interactive}{Defaults to \code{TRUE}. If \code{FALSE} existing files are overwritten and data (if not existiing) downloaded automatically, i.e. without asking.}
 }
 \value{
 No R output. Data and instruction is saved as netCDF file (\code{filename.nc}).

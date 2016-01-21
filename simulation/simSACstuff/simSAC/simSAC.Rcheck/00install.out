@@ -1,0 +1,37 @@
+Warning message:
+package 'coda' was built under R version 3.2.2 
+[1] "R2WinBUGS loaded"
+* installing *source* package 'simSAC' ...
+** R
+** preparing package for lazy loading
+Warning: package 'ncdf4' was built under R version 3.2.2
+Warning: package 'RandomFields' was built under R version 3.2.3
+Warning: package 'sp' was built under R version 3.2.2
+Warning: package 'RandomFieldsUtils' was built under R version 3.2.3
+Warning: package 'raster' was built under R version 3.2.3
+Warning: replacing previous import by 'raster::atan2' when loading 'simSAC'
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+*** arch - i386
+Warning message:
+package 'coda' was built under R version 3.2.2 
+[1] "R2WinBUGS loaded"
+Warning: package 'ncdf4' was built under R version 3.2.2
+Warning: package 'RandomFields' was built under R version 3.2.3
+Warning: package 'sp' was built under R version 3.2.2
+Warning: package 'RandomFieldsUtils' was built under R version 3.2.3
+Warning: package 'raster' was built under R version 3.2.3
+Warning: replacing previous import by 'raster::atan2' when loading 'simSAC'
+*** arch - x64
+Warning message:
+package 'coda' was built under R version 3.2.2 
+[1] "R2WinBUGS loaded"
+Warning: package 'ncdf4' was built under R version 3.2.2
+Warning: package 'RandomFields' was built under R version 3.2.3
+Warning: package 'sp' was built under R version 3.2.2
+Warning: package 'RandomFieldsUtils' was built under R version 3.2.3
+Warning: package 'raster' was built under R version 3.2.3
+Warning: replacing previous import by 'raster::atan2' when loading 'simSAC'
+* DONE (simSAC)

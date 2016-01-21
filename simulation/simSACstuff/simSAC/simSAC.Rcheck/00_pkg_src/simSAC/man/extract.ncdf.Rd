@@ -18,9 +18,9 @@ This function allows to readily extract data, simulated with simSAC::simData, an
 \examples{
 \dontrun{
 # simulate data for smooth landscape, normally distributed y and no SAC
-simData("110", filename = paste0(getwd(),"/SmoothGaussRef")) 
+simData("110") 
 # extract attributes and data
-SGR <- extract.ncdf(paste0(getwd(),"/SmoothGaussRef.nc")) 
+SGR <- extract.ncdf(paste0(getwd(),"/dataset110.nc")) 
 SGR[[1]] # attributes
 head(SGR[[2]]) # data
 

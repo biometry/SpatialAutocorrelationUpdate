@@ -8,9 +8,9 @@
 #' @examples
 #' \dontrun{
 #' # simulate data for smooth landscape, normally distributed y and no SAC
-#' simData("110", filename = paste0(getwd(),"/SmoothGaussRef")) 
+#' simData("110") 
 #' # extract attributes and data
-#' SGR <- extract.ncdf(paste0(getwd(),"/SmoothGaussRef.nc")) 
+#' SGR <- extract.ncdf(paste0(getwd(),"/dataset110.nc")) 
 #' SGR[[1]] # attributes
 #' head(SGR[[2]]) # data
 #' 
@@ -19,7 +19,7 @@
 #' }
 extract.ncdf <- function(ncfile){
   # open ncdf
-  nc <- open.ncdf(ncfile)
+  nc <- nc_open(ncfile)
   
   # get variable names
   vnames <- names(nc[["var"]])
@@ -27,25 +27,27 @@ extract.ncdf <- function(ncfile){
   # get data
   mat <- matrix(NA, nrow = nc$dim$row$len, ncol = nc$nvars)
   for(var in seq_along(vnames)){
-    mat[ ,var] <- get.var.ncdf(nc, var+1)
+    mat[ ,var] <- ncvar_get(nc, vnames[var])
   }
   df <- as.data.frame(mat)
   names(df) <- vnames
   
   # get global attributes
-  genInfo <- att.get.ncdf(nc, 0, "genInfo")$value
-  landsc <- att.get.ncdf(nc, 0, "landsc")$value
-  distr <- att.get.ncdf(nc, 0, "distr")$value
-  sacSen <- att.get.ncdf(nc, 0, "sacScen")$value
-  model <- att.get.ncdf(nc, 0, "model")$value
+  genInfo <- ncatt_get(nc, 0, "genInfo")$value
+  landsc <- ncatt_get(nc, 0, "landsc")$value
+  distr <- ncatt_get(nc, 0, "distr")$value
+  sacSen <- ncatt_get(nc, 0, "sacScen")$value
+  model <- ncatt_get(nc, 0, "model")$value
+  coeffs <- ncatt_get(nc, 0, "coeffs")$value
   
-  close.ncdf(nc)
-  
+  nc_close(nc)
+    
   return(list(readme = list(General_Information = genInfo, 
                             Landscape_predictors = landsc,
                             Response_distribution = distr, 
                             SAC_Scenario = sacSen,
-                            Model_structure = model), 
+                            Model_structure = model,
+                            Response_coefficients = coeffs), 
               data = df))
   
 }
