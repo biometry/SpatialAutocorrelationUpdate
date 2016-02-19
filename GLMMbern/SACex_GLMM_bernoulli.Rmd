@@ -1,0 +1,326 @@
+---
+title: "Spatial Autocorrelation examples: Generalised Linear Mixed Model (GLMM)"
+author: "Carsten F. Dormann"
+date: '`r format(Sys.time(), "%d %B %Y")`'
+output: 
+  html_document:
+    toc: true
+    theme: readable
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(cache=TRUE, comment=NA, fig.align='center', warning=FALSE, message=FALSE, fig.width=7, fig.height=7)
+options(width = 100) 
+```
+
+# Introduction & superficial summary
+GLMMs, in the way presented here, are not really mixed effect models, we simply the framework here to fit a GLMM for non-normal data.
+
+Essentially everything said about GLMM applies here too, but at the link scale. Hence, during the estimation an additional iterative step is implemented (within the R-functions we use) to back-transform the fitted model to the response scale for comparison with the likelihood. (It is actually implemented differently, but in principle that is what happens.)
+
+
+# Method description
+
+See GLMM. The main difference is that the error term is not additive, but integrated in the distribution from which we assume the data derive.
+
+# Fitting and fine-tuning the approach
+GLMMs have one crucial "tuning knob": the covariance-matrix-structuring function $f$. We thus have to identify the most suitable structuring function for the entries in the variance-covariance matrix. We do that on a subset of the data in order to minimise double-use of the actual data (ideally we would not use these data anymore afterwards; for large data sets, that is what we indeed recommend; for small data sets using only a small random subset may be a good compromise between finding spurious and not detecting a real real relationship).
+
+In the following we first fine-tune the approach, quantify reduction in residual spatial autocorrelation, then cross-validate the models on a spatially blocked hold-out, to finally investigate the an exemplary effect plot. Note that we pretend to know the correct model structure. Model selection under spatial autocorrelation is **not** a topic we cover here.
+
+The GLMM function we will use from R is in the <tt>MASS</tt>-library, building on <tt>nlme:::lme</tt>, rather than <tt>GLMM</tt>. That means we have to provide a random effect, even if their is none.  The function offers a range of choices to specify how the covariance changes with distance. We will explore these options and then use the best fit for all subsequent analyses.
+
+```{r loading}
+setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLMMbern/")
+load("GLMM_workspace.Rdata") 
+# save computing time by loading a previous run; omit this if you want to run the entire thing yourself (which will take hours)
+```
+
+```{r initialisation}
+# Generate the data and load them:
+library(simSAC)
+if (! ("dataset211.nc" %in% dir() )) simData("221", r.seed=1, f.sac1=list(corCoef=-3, sarFactor=1), interactive=F)
+d221 <- extract.ncdf("dataset221.nc")[[2]]
+# show information about this data set:
+extract.ncdf("dataset221.nc")[[1]]
+library(ape)
+library(lattice)
+library(MASS)
+library(nlme)
+library(ncf)
+# visualise the response on a map:
+levelplot(y ~ Lat + Lon, d221)
+# to save time, we take data from the workspace:
+if (!("fmGLMM" %in% ls())){
+  ## quantify spatial autocorrelatin in the raw data:
+  cccraw <- correlog(d221$Lat, d221$Lon, d221$y, increment=0.05, resamp=1) # to be plotted later
+  ## now fit GLM and check residuals in the same way:
+  fmGLM <- glm(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d221, family=binomial)
+  summary(fmGLM)
+  levelplot(residuals(fmGLM, type="deviance") ~ Lat + Lon, d221)
+  cccGLMresids <- correlog(d221$Lat, d221$Lon, residuals(fmGLM, type="pearson"), increment=0.05, resamp=1) 
+  # now fit full GLMM to check it runs and reduces rSAC:
+  d221$group <- rep("a", nrow(d221))
+  system.time(fmGLMM <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, data=d221, family=binomial, correlation=corExp(form=~Lat+Lon))) # takes roughly 2 hours
+  summary(fmGLMM)
+  levelplot(residuals(fmGLMM, type="normalized") ~ Lat + Lon, d221)
+  cccGLMMresids <- correlog(d221$Lat, d221$Lon, residuals(fmGLMM, type="normalized"), increment=0.05, resamp=1) 
+  plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+  lines(cccGLMresids$mean.of.class, cccGLMresids$correlation, col="green")
+  lines(cccGLMMresids$mean.of.class, cccGLMMresids$correlation, col="orange")
+}
+```
+
+As intended, the raw data and the residuals of the non-spatial model exhibit clear spatial autocorrelation. The GLMM (but not the GLM!) does away with it, as can be seen both in the residual map (no clustering of values) and the correlogram.
+
+Note that we have to specify the residual type as "normalized" to get the residuals which include the spatial effect!
+
+First, we fit the model with the five typical corClasses. We have to abuse the R-code and out-comment the line that sets the log-likelihood to NA. (We do this under the assumption that because the fixed effect structure remains the same, a REML comparison of different correlation structures can be justified.) Then we compare their AICs as measure of fit.
+
+```{r redefineglmmPQL}
+glmmPQL <- function (fixed, random, family, data, correlation, weights, 
+    control, niter = 10, verbose = TRUE, ...) 
+{ # outcommented lines on logLik
+    if (!requireNamespace("nlme", quietly = TRUE)) 
+        stop("package 'nlme' is essential")
+    if (is.character(family)) 
+        family <- get(family)
+    if (is.function(family)) 
+        family <- family()
+    if (is.null(family$family)) {
+        print(family)
+        stop("'family' not recognized")
+    }
+    m <- mcall <- Call <- match.call()
+    nm <- names(m)[-1L]
+    keep <- is.element(nm, c("weights", "data", "subset", "na.action"))
+    for (i in nm[!keep]) m[[i]] <- NULL
+    allvars <- if (is.list(random)) 
+        allvars <- c(all.vars(fixed), names(random), unlist(lapply(random, 
+            function(x) all.vars(formula(x)))))
+    else c(all.vars(fixed), all.vars(random))
+    Terms <- if (missing(data)) 
+        terms(fixed)
+    else terms(fixed, data = data)
+    off <- attr(Terms, "offset")
+    if (length(off <- attr(Terms, "offset"))) 
+        allvars <- c(allvars, as.character(attr(Terms, "variables"))[off + 
+            1])
+    if (!missing(correlation) && !is.null(attr(correlation, "formula"))) 
+        allvars <- c(allvars, all.vars(attr(correlation, "formula")))
+    Call$fixed <- eval(fixed)
+    Call$random <- eval(random)
+    m$formula <- as.formula(paste("~", paste(allvars, collapse = "+")))
+    environment(m$formula) <- environment(fixed)
+    m$drop.unused.levels <- TRUE
+    m[[1L]] <- quote(stats::model.frame)
+    mf <- eval.parent(m)
+    off <- model.offset(mf)
+    if (is.null(off)) 
+        off <- 0
+    wts <- model.weights(mf)
+    if (is.null(wts)) 
+        wts <- rep(1, nrow(mf))
+    mf$wts <- wts
+    fit0 <- glm(formula = fixed, family = family, data = mf, 
+        weights = wts, ...)
+    w <- fit0$prior.weights
+    eta <- fit0$linear.predictors
+    zz <- eta + fit0$residuals - off
+    wz <- fit0$weights
+    fam <- family
+    nm <- names(mcall)[-1L]
+    keep <- is.element(nm, c("fixed", "random", "data", "subset", 
+        "na.action", "control"))
+    for (i in nm[!keep]) mcall[[i]] <- NULL
+    fixed[[2L]] <- quote(zz)
+    mcall[["fixed"]] <- fixed
+    mcall[[1L]] <- quote(nlme::lme)
+    mcall$random <- random
+    mcall$method <- "ML"
+    if (!missing(correlation)) 
+        mcall$correlation <- correlation
+    mcall$weights <- quote(nlme::varFixed(~invwt))
+    mf$zz <- zz
+    mf$invwt <- 1/wz
+    mcall$data <- mf
+    for (i in seq_len(niter)) {
+        if (verbose) 
+            message(gettextf("iteration %d", i), domain = NA)
+        fit <- eval(mcall)
+        etaold <- eta
+        eta <- fitted(fit) + off
+        if (sum((eta - etaold)^2) < 1e-06 * sum(eta^2)) 
+            break
+        mu <- fam$linkinv(eta)
+        mu.eta.val <- fam$mu.eta(eta)
+        mf$zz <- eta + (fit0$y - mu)/mu.eta.val - off
+        wz <- w * mu.eta.val^2/fam$variance(mu)
+        mf$invwt <- 1/wz
+        mcall$data <- mf
+    }
+    #attributes(fit$logLik) <- NULL
+    fit$call <- Call
+    fit$family <- family
+    #fit$logLik <- as.numeric(NA)
+    oldClass(fit) <- c("glmmPQL", oldClass(fit))
+    fit
+}
+```
+
+```{r corStructselection}
+# use a subset to identify the best correlation structure:
+f0 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ])
+f1 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ], correlation=corExp(form=~Lat+Lon))
+f2 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ], correlation=corGaus(form=~Lat+Lon))
+f3 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ], correlation=corLin(form=~Lat+Lon))
+f4 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ], correlation=corRatio(form=~Lat+Lon))
+f5 <- glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data=d221[d221$CVid %in% c(1,3), ], correlation=corSpher(form=~Lat+Lon))
+sapply(list(f0, f1, f2, f3, f4, f5), function(x) x$logLik)
+```
+According to the fits onto the subset of data, <tt>corRatio</tt> is the best correlation structure, followed by the correct <tt>corExp</tt>. It also took longest to run. (Note that all structures are better than the non-spatial model.)
+With an estimated parameter "range" of 0.014 this structure is very similar to an exponential decay.
+```{r}
+curve(1/(1+(x/0.014)^2), ylab="similarity", xlab="distance", las=1, lwd=2, xlim=c(0, 0.25), n=501) # corRatio
+curve(exp(-x/0.022), add=T, col="red", lwd=2) # corExp
+```
+We shall use the best fitting structure identified.
+
+# Assessing model predictions by 10-fold block cross-validation
+With these optimised settings, we now use a 10-fold block cross-validation to evaluate how well the model predicts to unused data.
+
+(This takes several hours to run, so we added the if-clause in the beginning for the situation that we have loaded the results from a previous run.)
+```{r crossvalidation}
+if (!("fcvs_GLMM_d221" %in% ls())){
+  fcvs_GLMM_d221 <- list()
+  for (i in 1:10){
+	  fittedmodel <- try(glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, family=binomial, data = d221[d221$CVid != i,], correlation=corRatio(form=~Lat+Lon), verbose=T))
+	  if (inherits(fittedmodel, "try-error")) print("oh dear, GLMM didn't work out!")
+	  fcvs_GLMM_d221[[i]] <- fittedmodel
+	  rm(fittedmodel)
+	  #1print(i)
+  }
+  save.image(file="GLMM_workspace.Rdata")
+}
+```
+
+Then we predict each to the hold-out and compare with the y-values to compute an RMSE:
+```{r rmses, eval=T}
+RMSEs <- NA
+for (i in 1:10){
+	preds <- predict(fcvs_GLMM_d221[[i]], newdata=d221[d221$CVid == i, ], type="response") # ragged! 
+	RMSEs[i] <- sqrt(mean((preds - d221$y[d221$CVid == i])^2))
+}
+RMSEs
+(meanRMSE <- mean(RMSEs, na.rm=T))
+```
+Note that the GLMM may not converge or have a warning such as "matrix not positive definite". This indicates a problem with fitting the matrix $\Sigma$, which may be do to the specific data, the specific correlation structure and alike. We omit these cross-validations when computing the mean RMSE.
+
+For comparison, we do the same with the non-spatial GLM:
+```{r crossvalLM, eval=T}
+fcvs_GLM_d221 <- list()
+for (i in 1:10){
+	fittedmodel <- glm(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, family=binomial, data = d221[d221$CVid != i,])
+	fcvs_GLM_d221[[i]] <- fittedmodel
+	rm(fittedmodel)
+	#print(i)
+}
+RMSEsGLM <- NA
+for (i in (1:10)[-c(6,9)]){
+	preds <- predict(fcvs_GLM_d221[[i]], newdata=d221[d221$CVid == i, ], type="response")
+	RMSEsGLM[i] <- sqrt(mean((preds - d221$y[d221$CVid == i])^2))
+}
+(meanRMSEglm <- mean(RMSEsGLM, na.rm=T)) # 
+```
+
+# Quantifying SAC in residuals
+This is merely checking that also in the block cross-validation residuals are free of spatial autocorrelation.
+
+```{r resSAC, eval=T}
+if (!("ccclist" %in% ls())){ # just to save time
+  ccclist <- list()
+  MoransIres <- matrix(NA, nrow=10, ncol=4)
+  colnames(MoransIres) <- c("observed", "expected", "sd", "p")
+
+  for (i in (1:10)){
+	  residsub <- residuals(fcvs_GLMM_d221[[i]], type="normalized")
+	  ccclist[[i]] <- correlog(d221$Lat[d221$CVid != i], d221$Lon[d221$CVid != i], residsub, increment=.05, resamp=1)
+	  invDsubset <- 1/as.matrix(dist(d221[d221$CVid != i, 2:3]))
+	  diag(invDsubset) <- 0
+	  MoransIres[i,] <- unlist(Moran.I(residsub, invDsubset)) # 0.160 for GLMM
+	  rm(residsub)
+  }
+}
+plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+abline(h=0)
+lapply(ccclist, function(x) lines(x$mean.of.class, x$correlation, col="orange"))
+ls()
+MoransIres
+```
+
+So there is a consistent and highly significant amount of spatial autocorrelation left, but at the same time, the correlogram suggests that these models did a very fine job indeed in reducing it. For all practical purposes, I'm happy to ignore the p-values of the Moran's I computation and report the very low Moran's I values of less than 0.02.
+
+# Compute spatial autocorrelation predictions to cross-validation hold-out
+
+Prediction is made entirely based on fitted coefficients, and accordingly will *not* have the spatial autocorrelation reduced in the predictions.
+
+```{r MoranHoldout, eval=T}
+plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+abline(h=0)
+if (!("MoransIholdout" %in% ls())){
+  MoransIholdout <- matrix(NA, nrow=10, ncol=4)
+  colnames(MoransIholdout) <- c("observed", "expected", "sd", "p")
+  ccclistHoldout <- list()
+  for (i in (1:10)){
+	  resids <- d221$y[d221$CVid == i] - predict(fcvs_GLMM_d221[[i]], newdata=d221[d221$CVid == i, ]) # ragged! 
+	  ccc <- correlog(d221$Lat[d221$CVid == i], d221$Lon[d221$CVid == i], resids, increment=.05, resamp=1)
+	  ccclistHoldout[[i]] <- ccc
+    # compute Moran's I using package "ape":
+    invDsubset <- 1/as.matrix(dist(d221[d221$CVid == i, 2:3]))
+    diag(invDsubset) <- 0
+    MoransIholdout[i,] <- unlist(Moran.I(resids, invDsubset) )
+    rm(ccc, resids)
+  }
+  save.image(file="GLMM_workspace.Rdata")
+}
+lapply(ccclistHoldout, function(x) lines(x$mean.of.class, x$correlation))
+```
+
+
+# Effect plot
+Since we know the true relationship between response and all predictors, we could look at what the model fits, compared to the truth. The most complicated relationship is that between $Y$ and $x4$ and we thus plot truth (red) and fit (black, one for each cross-validation) for this:
+```{r x4effect, eval=T}
+newX4 <- seq(-1, 1, len=100)
+d221medians <- apply(d221[,-12], 2, median)
+newdats <- data.frame("x4"=newX4, t(d221medians), "group"="a")
+predictMat <- matrix(NA, ncol=11, nrow=100)
+for (i in 1:10){
+	predictMat[, i] <- predict(fcvs_GLMM_d221[[i]], newdata=newdats)
+}
+predictMat[, 11] <- predict(fmGLMM, newdata=newdats)
+par(mar=c(4,4,1,1))
+matplot(newX4, plogis(predictMat[,-11]), type="l", lwd=2, col=rgb(.5, .5, .5, .5), lty=1, las=1)
+lines(newX4, plogis(predictMat[,11]), lwd=1, col="orange")
+curve(plogis(0.4 +1.2*x -1.2*x*x), add=T, col="red") # simulation parameters
+```
+A very good estimation of the correct model parameters!
+
+# Computation times
+Finally, we want to know how the approach scales with sample size. We generate a very large data set and sub-sample and analyse it using GLMM, recording computing times (on a mid 2013-rMBP).
+```{r computingTimes, eval=T}
+#if (! ("bigsim.nc" %in% dir() )) {
+#  simData("221", filename="bigsim", r.seed=i, gridsize=c(100, 100), cvfold=10, cvblock.size=c(10,10), f.sac1=list(corCoef=-3, sarFactor=1), interactive=F)
+#}
+large <- extract.ncdf("bigsim.nc")[[2]]
+large$group <- rep("a", nrow(large))
+# thin out randomly:
+set.seed(1)
+timing <- NA
+sizes <- c(100, 200, 500, 1000)#, 2000, 5000)
+for (i in seq_along(sizes)){                                                        
+  pickThese <- sample(1:NROW(large), sizes[i])
+  timedats <- large[pickThese,]
+  timing[i] <- system.time(glmmPQL(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, random=~1|group, data=timedats, family=binomial, correlation=corExp(form=~Lat+Lon) ) )[3]
+}
+plot(sizes, timing, type="b", pch=16, log="xy")
+```	

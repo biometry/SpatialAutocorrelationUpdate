@@ -1,0 +1,235 @@
+---
+title: "Spatial Autocorrelation examples: Generalised Least Squares (GLS)"
+author: "Carsten F. Dormann"
+date: '`r format(Sys.time(), "%d %B %Y")`'
+output: 
+  html_document:
+    toc: true
+    theme: readable
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(cache=TRUE, comment=NA, fig.align='center', warning=FALSE, message=FALSE, fig.width=7, fig.height=7)
+options(width = 100) 
+```
+
+# Introduction & superficial summary
+GLS allow the variance-covariance matrix to contain off-diagonal elements. The value of these elements can be fitted assuming (for our case) a relationship between the value and the spatial distance between points.
+
+GLS as such is restricted to normally distributed data, but it can be readily extended (at some computational cost) to other distributions (in particular those of the exponential family).
+
+
+# Method description
+
+A GLS fits a linear model with a heterogeneously structured error matrix.
+$$ Y = X\beta + \epsilon, \epsilon ~ N(0, \Sigma), $$
+where $\Sigma$ is the variance-covariance matrix of the errors. Sometimes this is written as $\sigma V$, where $V$ is now the correlation matrix, and $\sigma$ captures the overall variance (Pinheiro & Bates). 
+
+If $\Sigma$ is diagonal with identical entries, the resulting model is an Ordinary Least Square model. With a heterogeneous diagonal (but off-diagonal entries = 0), it becomes a GLS with heterogeneous errors (also referred to as weighted least squares, WLS). Temporally or spatially autocorrelated data feature non-zero off-diagonal elements, which are constrained in some way. In the spatial context, this constraint is given by the entry in the matrix $V$ being a function of the geographic distance between data points, $i$ and $j$, i.e. $\sigma_{ij} = f(D_{ij})$, where $f$ can be an exponential decay or alike.
+
+GLS is nowadays a common procedure, be it in time-series analysis, phylogenetic analyses (where the matrix $D$ may represent cophenetic distances) and spatial data. It is also the workhorse behind mixed effect models, where $\Sigma$-entries are grouped according to the nesting structure of the model.
+
+# Fitting and fine-tuning the approach
+GLS have one crucial "tuning knob": the covariance-matrix-structuring function $f$. We thus have to identify the most suitable structuring function for the entries in the variance-covariance matrix. We do that on a subset of the data in order to minimise double-use of the actual data (ideally we would not use these data anymore afterwards; for large data sets, that is what we indeed recommend; for small data sets using only a small random subset may be a good compromise between finding spurious and not detecting a real real relationship).
+
+In the following we first fine-tune the approach, quantify reduction in residual spatial autocorrelation, then cross-validate the models on a spatially blocked hold-out, to finally investigate the an exemplary effect plot. Note that we pretend to know the correct model structure. Model selection under spatial autocorrelation is **not** a topic we cover here.
+
+The GLS function we will use from R is in the nlme-library. It offers a range of choices to specify how the covariance changes with distance. We will explore these options and then use the best fit for all subsequent analyses.
+
+```{r loading}
+setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLS/")
+#load("GLS_workspace.Rdata") 
+# save computing time by loading a previous run; omit this if you want to run the entire thing yourself (which will take hours)
+```
+
+```{r initialisation}
+# Generate the data and load them:
+library(simSAC)
+if (! ("dataset211.nc" %in% dir() )) simData("211", r.seed=1, f.sac1=list(corCoef=-3, sarFactor=1), interactive=F)
+d211 <- extract.ncdf("dataset211.nc")[[2]]
+# show information about this data set:
+extract.ncdf("dataset211.nc")[[1]]
+library(ape)
+library(lattice)
+library(nlme)
+library(ncf)
+# visualise the response on a map:
+levelplot(y ~ Lat + Lon, d211)
+# to save time, we take data from the workspace:
+if (!("fmGLS" %in% ls())){
+  ## quantify spatial autocorrelatin in the raw data:
+  cccraw <- correlog(d211$Lat, d211$Lon, d211$y, increment=0.05, resamp=1) # to be plotted later
+  ## now fit GLM and check residuals in the same way:
+  fmGLM <- lm(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211)
+  summary(fmGLM)
+  levelplot(residuals(fmGLM, type="deviance") ~ Lat + Lon, d211)
+  cccGLMresids <- correlog(d211$Lat, d211$Lon, residuals(fmGLM, type="pearson"), increment=0.05, resamp=1) 
+  # now fit full GLS to check it runs and reduces rSAC:
+  fmGLS <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211, correlation=corExp(form=~Lat+Lon)) # takes roughly 15 min
+  summary(fmGLS)
+  levelplot(residuals(fmGLS, type="normalized") ~ Lat + Lon, d211)
+  cccGLSresids <- correlog(d211$Lat, d211$Lon, residuals(fmGLS, type="normalized"), increment=0.05, resamp=1) 
+}
+plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+lines(cccGLMresids$mean.of.class, cccGLMresids$correlation, col="green")
+lines(cccGLSresids$mean.of.class, cccGLSresids$correlation, col="orange")
+```
+
+As intended, the raw data and the residuals of the non-spatial model exhibit clear spatial autocorrelation. The GLS (but not the LM!) does away with it, as can be seen both in the residual map (no clustering of values) and the correlogram.
+
+Note that we have to specify the residual type as "normalized" to get the residuals which include the spatial effect!
+
+First, we fit the model with the five typical corClasses. Then we compare their AICs as measure of fit.
+```{r corStructselection}
+# use a subset to identify the best correlation structure:
+f0 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ])
+f1 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ], correlation=corExp(form=~Lat+Lon))
+f2 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ], correlation=corGaus(form=~Lat+Lon))
+f3 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ], correlation=corLin(form=~Lat+Lon))
+f4 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ], correlation=corRatio(form=~Lat+Lon))
+f5 <- gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=d211[d211$CVid %in% c(1,3), ], correlation=corSpher(form=~Lat+Lon), control=glsControl(opt = "optim") ) # optim seems to be a more robust optimiser than nlminb
+AIC(f0, f1, f2, f3, f4, f5)
+```
+According to the fits onto the subset of data, <tt>corExp</tt> is the best correlation structure. Note that all structures are better than the non-spatial model.
+
+
+# Assessing model predictions by 10-fold block cross-validation
+With these optimised settings, we now use a 10-fold block cross-validation to evaluate how well the model predicts to unused data.
+
+(This takes several hours to run, so we added the if-clause in the beginning for the situation that we have loaded the results from a previous run.)
+```{r crossvalidation}
+if (!("fcvs_GLS_d211" %in% ls())){
+  fcvs_GLS_d211 <- list()
+  for (i in 1:10){
+	  fittedmodel <- try(gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data = d211[d211$CVid != i,], correlation=corExp(form=~Lat+Lon), verbose=T))
+	  if (inherits(fittedmodel, "try-error")) print("oh dear, GLS didn't work out!")
+	  if (!is.numeric(fittedmodel$apVar)) print(paste(i, "vcov not pos-def!"))
+	  fcvs_GLS_d211[[i]] <- fittedmodel
+	  rm(fittedmodel)
+	  #1print(i)
+  }
+  save.image(file="GLS_workspace.Rdata")
+}
+```
+
+Then we predict each to the hold-out and compare with the y-values to compute an RMSE:
+```{r rmses}
+RMSEs <- NA
+for (i in 1:10){
+	preds <- predict(fcvs_GLS_d211[[i]], newdata=d211[d211$CVid == i, ]) # ragged! 
+	RMSEs[i] <- sqrt(mean((preds - d211$y[d211$CVid == i])^2))
+}
+RMSEs
+(meanRMSE <- mean(RMSEs, na.rm=T)) #1.097
+```
+Note that the GLS may not converge or have a warning such as "matrix not positive definite". This indicates a problem with fitting the matrix $\Sigma$, which may be do to the specific data, the specific correlation structure and alike. We omit these cross-validations when computing the mean RMSE.
+
+For comparison, we do the same with the non-spatial LM:
+```{r crossvalLM}
+fcvs_LM_d211 <- list()
+for (i in 1:10){
+	fittedmodel <- lm(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data = d211[d211$CVid != i,])
+	fcvs_LM_d211[[i]] <- fittedmodel
+	rm(fittedmodel)
+	#print(i)
+}
+RMSEsLM <- NA
+for (i in (1:10)[-c(6,9)]){
+	preds <- predict(fcvs_LM_d211[[i]], newdata=d211[d211$CVid == i, ])
+	RMSEsLM[i] <- sqrt(mean((preds - d211$y[d211$CVid == i])^2))
+}
+(meanRMSElm <- mean(RMSEsLM, na.rm=T)) # 1.117
+```
+
+# Quantifying SAC in residuals
+This is merely checking that also in the block cross-validation residuals are free of spatial autocorrelation.
+
+```{r resSAC}
+if (!("ccclist" %in% ls())){ # just to save time
+  ccclist <- list()
+  MoransIres <- matrix(NA, nrow=10, ncol=4)
+  colnames(MoransIres) <- c("observed", "expected", "sd", "p")
+
+  for (i in (1:10)){
+	  residsub <- residuals(fcvs_GLS_d211[[i]], type="normalized")
+	  ccclist[[i]] <- correlog(d211$Lat[d211$CVid != i], d211$Lon[d211$CVid != i], residsub, increment=.05, resamp=1)
+	  invDsubset <- 1/as.matrix(dist(d211[d211$CVid != i, 2:3]))
+	  diag(invDsubset) <- 0
+	  MoransIres[i,] <- unlist(Moran.I(residsub, invDsubset)) # 0.160 for GLS
+	  rm(residsub)
+  }
+}
+plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+abline(h=0)
+lapply(ccclist, function(x) lines(x$mean.of.class, x$correlation, col="orange"))
+ls()
+MoransIres
+```
+
+
+# Compute spatial autocorrelation predictions to cross-validation hold-out
+
+Predictions from a GLS are not trivial. Although the spatial autocorrelation is entirely in the error term, the optimal prediction for a new $X^*$ is $y^* = X^* \beta + w'\Omega^{-1}\hat{u}$ (see http://stats.stackexchange.com/questions/14426/prediction-with-gls and Goldberger 1964). Neither <tt>nlme::predict.gls</tt> nor <tt>AICcmodavg::predictSe.gls</tt> include the second term for prediction and thus make non-optimal predictions.
+
+Although the function <tt>nlme:::residuals.gls</tt> include some lines of code to embrace the covariance-structure for computing residuals (search that R-code for <tt>"normalized"</tt>), it is unclear to me, and not documented, how to use the fitted corStruct to predict to new data points. Thus, prediction is made entirely based on fitted coefficients, and accordingly will *not* have the spatial autocorrelation reduced in the predictions.
+
+```{r MoranHoldout, cache=T}
+plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1, type="b", xlab="distance", ylab="Morans I")
+abline(h=0)
+if (!("MoransIholdout" %in% ls())){
+  MoransIholdout <- matrix(NA, nrow=10, ncol=4)
+  colnames(MoransIholdout) <- c("observed", "expected", "sd",)
+  ccclistHoldout <- list()
+  for (i in (1:10)){
+	  resids <- d211$y[d211$CVid == i] - predict(fcvs_GLS_d211[[i]], newdata=d211[d211$CVid == i, ]) # ragged! 
+	  ccc <- correlog(d211$Lat[d211$CVid == i], d211$Lon[d211$CVid == i], resids, increment=.05, resamp=1)
+	  ccclistHoldout[[i]] <- ccc
+    # compute Moran's I using package "ape":
+    invDsubset <- 1/as.matrix(dist(d211[d211$CVid == i, 2:3]))
+    diag(invDsubset) <- 0
+    MoransIholdout[i,] <- unlist(Moran.I(resids, invDsubset) )
+    rm(ccc, resids)
+  }
+  save.image(file="GLS_workspace.Rdata")
+}
+ls()
+lapply(ccclistHoldout, function(x) lines(x$mean.of.class, x$correlation))
+```
+
+
+# Effect plot
+Since we know the true relationship between response and all predictors, we could look at what the model fits, compared to the truth. The most complicated relationship is that between $Y$ and $x4$ and we thus plot truth (red) and fit (black, one for each cross-validation) for this:
+```{r x4effect}
+newX4 <- seq(-1, 1, len=100)
+d211medians <- apply(d211, 2, median)
+newdats <- data.frame("x4"=newX4, t(d211medians))
+predictMat <- matrix(NA, ncol=11, nrow=100)
+for (i in 1:10){
+	predictMat[, i] <- predict(fcvs_GLS_d211[[i]], newdata=newdats)
+}
+predictMat[, 11] <- predict(fmGLS, newdata=newdats)
+par(mar=c(4,4,1,1))
+matplot(newX4, predictMat[,-11], type="l", lwd=2, col=rgb(.5, .5, .5, .5), lty=1, las=1)
+lines(newX4, predictMat[,11], lwd=1, col="orange")
+curve(0.8 +0.9*x -0.8*x*x, add=T, col="red") # simulation parameters
+```
+A very good estimation of the correct model parameters!
+
+# Computation times
+Finally, we want to know how the approach scales with sample size. We generate a very large data set and sub-sample and analyse it using GLS, recording computing times (on a mid 2013-rMBP).
+```{r computingTimes, eval=T}
+#if (! ("bigsim.nc" %in% dir() )) {
+#  simData("211", filename="bigsim", r.seed=i, gridsize=c(100, 100), cvfold=10, cvblock.size=c(10,10), interactive=F)
+#}
+large <- extract.ncdf("bigsim.nc")[[2]]
+# thin out randomly:
+set.seed(1)
+timing <- NA
+sizes <- c(100, 200, 500, 1000, 2000, 5000)
+for (i in 1:6){                                                        
+  pickThese <- sample(1:NROW(large), sizes[i])
+  timedats <- large[pickThese,]
+  timing[i] <- system.time(gls(y ~ x1 + x4 + I(x4^2) + x3*x4 + x3 + x2 + x5 + x6 + x7, data=timedats, correlation=corExp(form=~Lat+Lon) ) )[3]
+}
+plot(sizes, timing, type="b", pch=16, log="xy")
+```	

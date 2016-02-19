@@ -21,8 +21,8 @@
 #'                       bio.vars = c("bio1", "bio19", "bio2", "bio12", "bio4", "bio18", "bio3")),
 #'         f.response = c("x1", "x4", "x4^2", "x3*x4", "x3"),
 #'         par.response = "default", 
-#'         f.sac1 = list(corCoef = -0.3,
-#'                       sarFactor = 10),
+#'         f.sac1 = list(corCoef = -3,
+#'                       sarFactor = 1),
 #'         f.sac2 = "x1", 
 #'         f.sac3 = c("^","*"), 
 #'         f.sac4 = list(dispersal.max = 0.1, 
@@ -66,7 +66,7 @@
 #' @param par.response Coefficients for the elements in f.response. By default this numeric vector contains an intercept (first element) and beta values for every element in f.response. If the distribution is set to Gaussian, an addtional (last) element is provided to set the standard deviation in \code{\link[stats]{rnorm}}. 
 #' Defaults to 
 #' \itemize{
-#'  \item Gaussian: 0.8 (intercept), 0.2, -0.9, 0.8, -0.6, 0.5, 0.2 (Gaussian error)
+#'  \item Gaussian: 0.8 (intercept), 0.2, 0.9, -0.8, -0.6, 0.5, 0.2 (Gaussian error)
 #'  \item Bernoulli: 0.2 (intercept), 4.5, -1.2, -1.2, -1.1, 0.9
 #'  \item Poisson: 0.2 (intercept), 1.6, 0.9, 0.8, -0.8, 0.5  
 #'}
@@ -500,10 +500,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   # response
   
   # compute dist matrix for scenario 1 or 4
-  if(dataset[3] %in% c(1,4)){
+  if (dataset[3] %in% c(1,4)){
     D <- dist.matrix(as.matrix(grd), method = "euclidean")
     # Dispersal
-    if(dataset[3] == 4){
+    if (dataset[3] == 4){
       D.scaled <- (D - min(D, na.rm=T))/(max(D, na.rm=T)-min(D, na.rm=T)) # scale to [0;1]
       # dispersal factor from variably skewed exponential curve
       disp <- f.sac4$dispersal.max / exp(D.scaled * f.sac4$dispersal.shape) 
@@ -512,14 +512,14 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   }
   
   # 1) normal distribution #
-  if(dataset[2] == 1){
+  if (dataset[2] == 1){
     readme[[2]] <- "Gaussian"
     set.seed(r.seed)
     # set default parameters
-    if(par.response == "default"){
-      par.gaus <- c(0.8,0.2,-0.9,0.8,-0.6,0.5,0.2)
-    }else{
-      if(length(par.response) != length(f.response)+1) 
+    if (par.response == "default"){
+      par.gaus <- c(0.8,0.2, 0.9, -0.8,-0.6,0.5,0.2)
+    } else {
+      if (length(par.response) != length(f.response)+1) 
          stop("In case of a Gaussian distribution you must provide
                par.response as numeric vector of length
                length(f.response)+1")
@@ -529,21 +529,20 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
     resp.formula <- Reduce(paste, c(paste(par.gaus[1],"+"),
                                     paste(paste(par.gaus[2:(length(par.gaus)-1)],"*",f.response),
                                           collapse="+", sep = " ")))
-    y <- eval(parse(text = resp.formula)) 
-    + rnorm(prod(gridsize), 0, par.gaus[length(par.gaus)]) # add Gaussian noise
-    if(dataset[3] == 4){ # if dispersal
+    y <- eval(parse(text = resp.formula)) + rnorm(prod(gridsize), 0, par.gaus[length(par.gaus)]) # add Gaussian noise
+    if (dataset[3] == 4){ # if dispersal
       y <- sapply(seq_along(y), function(x) y[x] * (1+ sum(disp[ ,x] * y)))
     }
   }
   
   # 1) binomial distribution #
-  if(dataset[2] == 2){
+  if (dataset[2] == 2){
     readme[[2]] <- "Bernoulli"
     # set default parameters
-    if(par.response == "default"){
-      par.bern <- c(0.2,4.5,-1.2,-1.2,-1.1,0.9)
-    }else{
-      if(length(par.response) != length(f.response)) 
+    if (par.response == "default"){
+      par.bern <- c(0.2, 4.5, 1.2,-1.2,-1.1,0.9)
+    } else {
+      if (length(par.response) != length(f.response)) 
          stop("In case of a Bernoulli distribution you must provide
                par.response as numeric vector of same length
                as f.response")
@@ -554,11 +553,11 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
                                     paste(paste(par.bern[2:length(par.bern)],"*",f.response),
                                           collapse="+", sep = " ")))
     pi.log <- eval(parse(text = resp.formula))
-    if(dataset[3] %in% c(0,2,3)){
+    if (dataset[3] %in% c(0,2,3)){
       set.seed(r.seed)
       y <- rbinom(prod(gridsize), size = 1, prob=plogis(pi.log))
-    }else{
-      if(dataset[3] == 4){ # if dispersal
+    } else {
+      if (dataset[3] == 4){ # if dispersal
         disp.prob <- sapply(seq_along(pi.log), function(x) plogis(pi.log[x]) * 
                               prod((1 + disp[ ,x] * plogis(pi.log))))
         disp.prob <- ifelse(disp.prob > 1, 1, disp.prob)
@@ -569,14 +568,14 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   }
 
   # 1) zero-inflated poisson distribution #
-  if(dataset[2] == 3){
+  if (dataset[2] == 3){
     readme[[2]] <- "zero-inflated Poisson"
     # set default parameters
-    if(par.response == "default"){
-      par.bern <- c(0.2,4.5,-1.2,-1.2,-1.1,0.9)
-      par.pois <- c(0.2,1.6,0.9,0.8,-0.8,0.5)
-    }else{
-      if(length(par.response) != 2 | length(par.response[[1]]) != length(f.response) | 
+    if (par.response == "default"){
+      par.bern <- c(0.2,4.5,1.2,-1.2,-1.1,0.9)
+      par.pois <- c(0.2,1.6,0.9,-0.8,-0.8,0.5)
+    } else {
+      if (length(par.response) != 2 | length(par.response[[1]]) != length(f.response) | 
          length(par.response[[2]]) != length(f.response)) stop("In case of a Poisson 
                distribution you must provide par.response as a list of two numeric vectors, both 
                of the same length as f.response. The first for the Bernoulli distribution, 
@@ -624,7 +623,7 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
     }
   
   # 1) SAC onto response #
-  if(dataset[3] == 1){
+  if (dataset[3] == 1){
     readme[[3]] <- paste0("SAC onto response variable. ",
                           "Correlation structure: e^(",f.sac1$corCoef," * distance.matrix). ",
                           "SAC error added to y was multiplied by ",f.sac1$sarFactor)
@@ -639,14 +638,14 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
     set.seed(r.seed); err <- WInv %*% rnorm(dim(D)[1]) # produces correlated normal errors
     err <- err - mean(err) # center error
     
-    if(dataset[2] == 1) y <- y + err * f.sac1$sarFactor
-    if(dataset[2] == 2){
+    if (dataset[2] == 1) y <- y + err * f.sac1$sarFactor
+    if (dataset[2] == 2){
       pi <- plogis(pi.log)
       set.seed(r.seed)
       # y <- rbinom(prod(gridsize), size = 1, prob=err * sqrt(pi * (1 - pi)) + pi)
       y <- ifelse((err * sqrt(pi * (1 - pi)) + pi) < 0.5, 0, 1)
     }
-    if(dataset[2] == 3){
+    if (dataset[2] == 3){
       y <- as.integer(abs(err * sqrt(pi) + pi))
     }
   }

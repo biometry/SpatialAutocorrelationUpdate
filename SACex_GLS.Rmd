@@ -1,0 +1,21 @@
+---
+title: "Spatial Autocorrelation examples: Generalised Least Squares (GLS)"
+author: "Carsten F. Dormann"
+date: '`r format(Sys.time(), "%d %B %Y")`'
+output: 
+  html_document:
+    toc: true
+    theme: readable
+---
+# Introduction
+GLS allow the variance-covariance matrix to contain off-diagonal elements. The value of these elements can be fitted assuming (for our case) a relationship between the value and the spatial distance between points.
+
+GLS as such is restricted to normally distributed data, but, as we will see, it can be readily extended (at some computational cost) to other distributions (in particular those of the exponential family).
+
+# Fitting and fine-tuning the approach
+```{r}
+setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLS/")
+library(simSAC)
+simData("111")
+```
+
