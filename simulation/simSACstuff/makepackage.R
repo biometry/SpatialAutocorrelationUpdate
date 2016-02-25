@@ -16,7 +16,7 @@ descr <- list("Maintainer" = "'Severin Hauenstein' <severin.hauenstein@saturn.un
               "Repository" = c("CRAN", "R-Forge"),
               "License" = "GPL",
               "Additional_repositories" = "http://R-Forge.R-project.org",
-              "Version" = 0.91
+              "Version" = 0.92
               )
               
 #create("simSAC", descr)
@@ -33,10 +33,10 @@ document()
 setwd("..")
 install("simSAC")
 library("simSAC")
-?simData
-?extract.ncdf
+#?simData
+#?extract.ncdf
 
 #build("simSAC")
 # for pdf run
-check(pkg = "simSAC", cran = FALSE, check_dir = getwd(), cleanup = FALSE)
+#check(pkg = "simSAC", cran = FALSE, check_dir = getwd(), cleanup = FALSE)
 build("simSAC")
