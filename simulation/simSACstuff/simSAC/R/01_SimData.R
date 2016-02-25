@@ -516,10 +516,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
     readme[[2]] <- "Gaussian"
     set.seed(r.seed)
     # set default parameters
-    if (par.response == "default"){
+    if (par.response[1] == "default"){
       par.gaus <- c(0.8,0.2, 0.9, -0.8,-0.6,0.5,0.2)
     } else {
-      if (length(par.response) != length(f.response)+1) 
+      if (length(par.response)-1 != length(f.response)+1) 
          stop("In case of a Gaussian distribution you must provide
                par.response as numeric vector of length
                length(f.response)+1")
@@ -539,10 +539,10 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   if (dataset[2] == 2){
     readme[[2]] <- "Bernoulli"
     # set default parameters
-    if (par.response == "default"){
+    if (par.response[1] == "default"){
       par.bern <- c(0.2, 4.5, 1.2,-1.2,-1.1,0.9)
     } else {
-      if (length(par.response) != length(f.response)) 
+      if (length(par.response)-1 != length(f.response)) 
          stop("In case of a Bernoulli distribution you must provide
                par.response as numeric vector of same length
                as f.response")
@@ -571,12 +571,12 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
   if (dataset[2] == 3){
     readme[[2]] <- "zero-inflated Poisson"
     # set default parameters
-    if (par.response == "default"){
-      par.bern <- c(0.2,4.5,1.2,-1.2,-1.1,0.9)
-      par.pois <- c(0.2,1.6,0.9,-0.8,-0.8,0.5)
+    if (par.response[1] == "default"){
+      par.bern <- c(0.2, 4.5, 1.2, -1.2, -1.1, 0.9)
+      par.pois <- c(0.2, 1.6, 0.9, -0.8, -0.8, 0.5)
     } else {
-      if (length(par.response) != 2 | length(par.response[[1]]) != length(f.response) | 
-         length(par.response[[2]]) != length(f.response)) stop("In case of a Poisson 
+      if (length(par.response) != 2 | length(par.response[[1]])-1 != length(f.response) | 
+         length(par.response[[2]])-1 != length(f.response)) stop("In case of a Poisson 
                distribution you must provide par.response as a list of two numeric vectors, both 
                of the same length as f.response. The first for the Bernoulli distribution, 
                the second for the then zero-inflated Possion")
@@ -587,14 +587,13 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
     # zero-inflation from Bernoulli distribution
     zeroone <- rbinom(prod(gridsize), size = 1, 
                       prob=plogis(eval(parse(text = Reduce(paste, 
-                                                           c(paste(par.bern[1],"+"),
-                                                             paste(paste(par.bern[2:length(par.bern)],"*",
-                                                                         f.response), 
-                                                                   collapse="+", sep = " ")))))))
+                            c(paste(par.bern[1],"+"),
+                  paste(paste(par.bern[2:length(par.bern)],"*",
+     f.response), collapse="+", sep = " ")))))))
     resp.formula <- Reduce(paste, c(paste(par.pois[1],"+"),
                                     paste(paste(par.pois[2:length(par.pois)],"*",f.response),
                                           collapse="+", sep = " ")))
-    pi <- exp(eval(parse(text = resp.formula)))
+    pi <- exp(eval(parse(text = resp.formula)) + rnorm(prod(gridsize), sd=0.2)) # add a bit of noise
     set.seed(r.seed)
     # use poisson error for cases where y = 1
     y <- rpois(prod(gridsize), lambda = pi)
