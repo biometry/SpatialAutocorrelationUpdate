@@ -29,6 +29,21 @@ d131 <- extract.ncdf("dataset131.nc")[[2]] # extract data only
 levelplot(y~Lon+Lat,data=d111) # levelplot response
 
 
+# make a very simple SAC-data set:
+simData("121", filename="simpletest", r.seed=4, gridsize=c(30, 30), cvblock.size=c(5,5), f.response=c("x1", "x5"), par.response=c(1, 1, 0), , f.sac1=list(corCoef=-1, sarFactor=0.1), interactive=F) # binary, simple landscape, SAC on response
+st <- extract.ncdf("simpletest.nc")[[2]]
+#extract.ncdf("simpletest.nc")[[1]]
+#head(st)
+levelplot(y~Lon+Lat,data=st) # levelplot response
+summary(glm(y ~ x1 + x5, data=st, family=binomial))
+# autocov
+library(spdep)
+ac <- autocov_dist(st$y, as.matrix(st[, 2:3]))
+summary(fautocov111 <- glm(y ~ x1 + x5 + ac, data = st, family = binomial)   )
+
+
+
+
 
 
 # 2. run a model, compute residual map
@@ -162,6 +177,11 @@ rescparlwr111 <- d111$y - fcparlwr111$yhat
 levelplot(rescparlwr111 ~ Lon+Lat,data=d111)
 
 # %%%%%%%%%%%%%%%%%% end GWR %%%%%%%%%%%%%%%
+
+
+## hglm
+# see R Journal 7/2, first paper, by Alam et al. 2015
+
 
 
 ## hSDM
