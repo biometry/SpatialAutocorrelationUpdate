@@ -31,6 +31,11 @@ In the following we first fine-tune the approach, quantify reduction in residual
 The GLMM function we will use from R is in the <tt>MASS</tt>-library, building on <tt>nlme:::lme</tt>, rather than <tt>GLMM</tt>. That means we have to provide a random effect, even if their is none.  The function offers a range of choices to specify how the covariance changes with distance. We will explore these options and then use the best fit for all subsequent analyses.
 
 ```{r loading}
+if (!require("simSAC", character.only=T)){ 
+  library(devtools)
+  install_url("http://wordspace.r-forge.r-project.org/downloads/wordspace_0.1-14.tar.gz", type="source")
+  install_github("https://github.com/biometry/SpatialAutocorrelationUpdate/tree/master/simulation/simSACstuff/simSAC_0.91.tar.gz")
+}
 setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLMMbern/")
 load("GLMM_workspace.Rdata") 
 # save computing time by loading a previous run; omit this if you want to run the entire thing yourself (which will take hours)

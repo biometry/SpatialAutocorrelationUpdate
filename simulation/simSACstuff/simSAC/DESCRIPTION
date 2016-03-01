@@ -1,6 +1,6 @@
 Package: simSAC
 Title: Simulate spatially autocorrelated (SAC) data
-Version: 0.91
+Version: 0.92
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: simSAC provides a function to simulate data on three different
     landscapes; a Gaussian, Bernoulli or zero-inflated Poisson distributed repsonse

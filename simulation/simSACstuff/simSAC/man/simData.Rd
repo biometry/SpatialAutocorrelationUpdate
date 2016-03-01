@@ -24,8 +24,8 @@ simData(dataset,
                       bio.vars = c("bio1", "bio19", "bio2", "bio12", "bio4", "bio18", "bio3")),
         f.response = c("x1", "x4", "x4^2", "x3*x4", "x3"),
         par.response = "default", 
-        f.sac1 = list(corCoef = -0.3,
-                      sarFactor = 10),
+        f.sac1 = list(corCoef = -3,
+                      sarFactor = 1),
         f.sac2 = "x1", 
         f.sac3 = c("^","*"), 
         f.sac4 = list(dispersal.max = 0.1, 
@@ -82,7 +82,7 @@ simData(dataset,
 \item{par.response}{Coefficients for the elements in f.response. By default this numeric vector contains an intercept (first element) and beta values for every element in f.response. If the distribution is set to Gaussian, an addtional (last) element is provided to set the standard deviation in \code{\link[stats]{rnorm}}. 
 Defaults to 
 \itemize{
- \item Gaussian: 0.8 (intercept), 0.2, -0.9, 0.8, -0.6, 0.5, 0.2 (Gaussian error)
+ \item Gaussian: 0.8 (intercept), 0.2, 0.9, -0.8, -0.6, 0.5, 0.2 (Gaussian error)
  \item Bernoulli: 0.2 (intercept), 4.5, -1.2, -1.2, -1.1, 0.9
  \item Poisson: 0.2 (intercept), 1.6, 0.9, 0.8, -0.8, 0.5  
 }

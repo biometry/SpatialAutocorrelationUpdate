@@ -37,6 +37,11 @@ In the following we first fine-tune the approach, quantify reduction in residual
 The GLS function we will use from R is in the nlme-library. It offers a range of choices to specify how the covariance changes with distance. We will explore these options and then use the best fit for all subsequent analyses.
 
 ```{r loading}
+if (!require("simSAC", character.only=T)){ 
+  library(devtools)
+  install_url("http://wordspace.r-forge.r-project.org/downloads/wordspace_0.1-14.tar.gz", type="source")
+  install_github("https://github.com/biometry/SpatialAutocorrelationUpdate/tree/master/simulation/simSACstuff/simSAC_0.91.tar.gz")
+}
 setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLS/")
 #load("GLS_workspace.Rdata") 
 # save computing time by loading a previous run; omit this if you want to run the entire thing yourself (which will take hours)
