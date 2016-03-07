@@ -40,7 +40,7 @@ The GLS function we will use from R is in the nlme-library. It offers a range of
 if (!require("simSAC", character.only=T)){ 
   library(devtools)
   install_url("http://wordspace.r-forge.r-project.org/downloads/wordspace_0.1-14.tar.gz", type="source")
-  install_github("https://github.com/biometry/SpatialAutocorrelationUpdate/tree/master/simulation/simSACstuff/simSAC_0.91.tar.gz")
+  install_github("https://github.com/biometry/SpatialAutocorrelationUpdate/tree/master/simulation/simSACstuff/simSAC_0.92.tar.gz")
 }
 setwd("/Users/Carsten/Data/aktuell/SpeciesDistributionAnalyses/SpatialAutocorrelationUpdate/GLS/")
 #load("GLS_workspace.Rdata") 
@@ -183,7 +183,7 @@ plot(cccraw$mean.of.class, cccraw$correlation, xlim=c(0,1), ylim=c(-1,1), las=1,
 abline(h=0)
 if (!("MoransIholdout" %in% ls())){
   MoransIholdout <- matrix(NA, nrow=10, ncol=4)
-  colnames(MoransIholdout) <- c("observed", "expected", "sd",)
+  colnames(MoransIholdout) <- c("observed", "expected", "sd", "p")
   ccclistHoldout <- list()
   for (i in (1:10)){
 	  resids <- d211$y[d211$CVid == i] - predict(fcvs_GLS_d211[[i]], newdata=d211[d211$CVid == i, ]) # ragged! 
