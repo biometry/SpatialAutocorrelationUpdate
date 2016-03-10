@@ -332,8 +332,8 @@ simData <- function(dataset, # three numbers character string: landscape, dsitri
                                   bio.vars = c("bio1", "bio19", "bio2", "bio12", "bio4", "bio18", "bio3")), 
                     f.response = c("x1", "x4", "x4^2", "x3*x4", "x3"),
                     par.response = "default", # dependant on distribution (dataset[2])
-                    f.sac1 = list(corCoef = -0.3,
-                                  sarFactor = 10),
+                    f.sac1 = list(corCoef = -3,
+                                  sarFactor = 1),
                     f.sac2 = "x1", # predictor to omit in model structure
                     f.sac3 = c("^","*"), # functional forms to omitin model structure, here quadratic effects and interactions
                     f.sac4 = list(dispersal.max = 0.1, # maximum dispersal rate
